@@ -19,7 +19,7 @@
 module "branch-network-folder" {
   source = "../../../modules/folder"
   parent = "organizations/${var.organization.id}"
-  name   = "Networking"
+  name   = "shared-resources"
   group_iam = local.groups.gcp-network-admins == null ? {} : {
     (local.groups.gcp-network-admins) = [
       # add any needed roles for resources/services not managed via Terraform,
@@ -37,48 +37,11 @@ module "branch-network-folder" {
     "roles/resourcemanager.folderAdmin"    = [module.branch-network-sa.iam_email]
     "roles/resourcemanager.projectCreator" = [module.branch-network-sa.iam_email]
     "roles/compute.xpnAdmin"               = [module.branch-network-sa.iam_email]
+    "roles/iam.serviceAccountTokenCreator" = [module.branch-network-sa.iam_email]
   }
   tag_bindings = {
     context = try(
       module.organization.tag_values["${var.tag_names.context}/networking"].id, null
-    )
-  }
-}
-
-module "branch-network-prod-folder" {
-  source = "../../../modules/folder"
-  parent = module.branch-network-folder.id
-  name   = "Production"
-  iam = {
-    (local.custom_roles.service_project_network_admin) = concat(
-      local.branch_optional_sa_lists.dp-prod,
-      local.branch_optional_sa_lists.gke-prod,
-      local.branch_optional_sa_lists.pf-prod,
-    )
-  }
-  tag_bindings = {
-    environment = try(
-      module.organization.tag_values["${var.tag_names.environment}/production"].id,
-      null
-    )
-  }
-}
-
-module "branch-network-dev-folder" {
-  source = "../../../modules/folder"
-  parent = module.branch-network-folder.id
-  name   = "Development"
-  iam = {
-    (local.custom_roles.service_project_network_admin) = concat(
-      local.branch_optional_sa_lists.dp-dev,
-      local.branch_optional_sa_lists.gke-dev,
-      local.branch_optional_sa_lists.pf-dev,
-    )
-  }
-  tag_bindings = {
-    environment = try(
-      module.organization.tag_values["${var.tag_names.environment}/development"].id,
-      null
     )
   }
 }
@@ -100,6 +63,7 @@ module "branch-network-sa" {
     (var.automation.outputs_bucket) = ["roles/storage.admin"]
   }
 }
+
 
 module "branch-network-gcs" {
   source        = "../../../modules/gcs"

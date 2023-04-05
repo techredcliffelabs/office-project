@@ -28,7 +28,7 @@ variable "id" {
 variable "location" {
   description = "Location of the bucket."
   type        = string
-  default     = "global"
+  default     = "us-central1"
 }
 
 variable "parent" {

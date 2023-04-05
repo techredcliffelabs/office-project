@@ -125,15 +125,15 @@ variable "groups" {
   type        = map(string)
   default = {
     gcp-billing-admins      = "gcp-billing-admins",
-    gcp-devops              = "gcp-devops",
-    gcp-network-admins      = "gcp-network-admins"
-    gcp-organization-admins = "gcp-organization-admins"
-    gcp-security-admins     = "gcp-security-admins"
+    gcp-devops              = "gcp-billing-admins",
+    gcp-network-admins      = "gcp-billing-admins"
+    gcp-organization-admins = "gcp-billing-admins"
+    gcp-security-admins     = "gcp-billing-admins"
     # gcp-support is not included in the official GCP Enterprise
     # Checklist, so by default we map gcp-support to gcp-devops.
     # However, we recommend creating gcp-support and updating the
     # value in the following line
-    gcp-support = "gcp-devops"
+    gcp-support = "gcp-billing-admins"
   }
 }
 
@@ -158,9 +158,9 @@ variable "locations" {
     pubsub  = list(string)
   })
   default = {
-    bq      = "EU"
-    gcs     = "EU"
-    logging = "global"
+    bq      = "us-central1"
+    gcs     = "us-central1"
+    logging = "us-central1"
     pubsub  = []
   }
   nullable = false
@@ -175,11 +175,11 @@ variable "log_sinks" {
     type   = string
   }))
   default = {
-    audit-logs = {
-      filter = "logName:\"/logs/cloudaudit.googleapis.com%2Factivity\" OR logName:\"/logs/cloudaudit.googleapis.com%2Fsystem_event\""
+    prod = {
+      filter = "logName:\"projects/tcl-prod-project/logs/cloudaudit.googleapis.com%2Factivity\" OR logName:\"projects/tcl-prod-project/logs/cloudaudit.googleapis.com%2Fsystem_event\" OR logName:\"projects/tcl-prod-project/logs/cloudaudit.googleapis.com%2Fdata_access\" OR logName:\"projects/tcl-prod-project/logs/cloudaudit.googleapis.com%2Fpolicy\""
       type   = "logging"
     }
-    vpc-sc = {
+    non-prod = {
       filter = "protoPayload.metadata.@type=\"type.googleapis.com/google.cloud.audit.VpcServiceControlAuditMetadata\""
       type   = "logging"
     }

@@ -10,3 +10,6 @@ iam.disableServiceAccountKeyCreation:
 
 iam.disableServiceAccountKeyUpload:
   enforce: true
+
+#iam.allowedPolicyMemberDomains:
+  #enforce: true

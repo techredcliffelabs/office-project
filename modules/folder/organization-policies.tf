@@ -86,7 +86,7 @@ locals {
   }
 }
 
-resource "google_org_policy_policy" "default" {
+resource "google_org_policy_policy" "default"{
   for_each = local.org_policies
   name     = each.value.name
   parent   = each.value.parent

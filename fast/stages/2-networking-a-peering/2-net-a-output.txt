@@ -1,0 +1,25 @@
+cloud_dns_inbound_policy = [
+  "10.128.0.2",
+]
+host_project_ids = {
+  "dev-spoke-0" = "tcl-dev-net-spoke-0a"
+  "prod-landing" = "tcl-prod-net-landing-0a"
+  "prod-spoke-0" = "tcl-prod-net-spoke-0a"
+}
+host_project_numbers = {
+  "dev-spoke-0" = "25353978016"
+  "prod-landing" = "699280089832"
+  "prod-spoke-0" = "860530037106"
+}
+shared_vpc_self_links = {
+  "dev-spoke-0" = "https://www.googleapis.com/compute/v1/projects/tcl-dev-net-spoke-0a/global/networks/dev-spoke-0"
+  "prod-landing" = "https://www.googleapis.com/compute/v1/projects/tcl-prod-net-landing-0a/global/networks/prod-landing-0"
+  "prod-spoke-0" = "https://www.googleapis.com/compute/v1/projects/tcl-prod-net-spoke-0a/global/networks/prod-spoke-0"
+}
+tfvars = <sensitive>
+vpn_gateway_endpoints = {
+  "onprem-primary" = {
+    "0" = "35.242.7.239"
+    "1" = "35.220.13.125"
+  }
+}

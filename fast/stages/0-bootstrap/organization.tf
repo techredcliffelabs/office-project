@@ -190,14 +190,14 @@ module "organization" {
       "compute.globalOperations.get",
     ]
   }
-  logging_sinks = {
+  /*logging_sinks = {
     for name, attrs in var.log_sinks : name => {
       bq_partitioned_table = attrs.type == "bigquery"
       destination          = local.log_sink_destinations[name].id
       filter               = attrs.filter
       type                 = attrs.type
     }
-  }
+  }*/
 }
 
 # assign the custom restricted Organization Admin role to the relevant service

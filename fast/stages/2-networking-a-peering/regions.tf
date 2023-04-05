@@ -36,7 +36,7 @@ locals {
       # first token via cardinal alias map or first character
       lookup(local._region_cardinal, v.1, substr(v.1, 0, 1)),
       # region number as is
-      v.2
+      v.2 
     ])
   }
 }

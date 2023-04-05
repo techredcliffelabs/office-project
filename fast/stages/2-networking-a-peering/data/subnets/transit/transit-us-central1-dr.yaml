@@ -1,0 +1,4 @@
+region: us-central1
+ip_cidr_range: 10.150.1.0/24
+description: DR subnet for transit vpc in us region
+

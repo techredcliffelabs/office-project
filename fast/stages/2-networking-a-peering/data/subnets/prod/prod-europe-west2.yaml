@@ -1,0 +1,4 @@
+region: europe-west2
+ip_cidr_range: 10.152.2.0/24
+description: Default subnet for prod vpc in europe region
+

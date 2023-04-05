@@ -74,10 +74,28 @@ module "log-export-gcs" {
 
 module "log-export-logbucket" {
   source      = "../../../modules/logging-bucket"
-  for_each    = toset([for k, v in var.log_sinks : k if v.type == "logging"])
+  #for_each    = toset([for k, v in var.log_sinks : k if v.type == "logging"])
   parent_type = "project"
   parent      = module.log-export-project.project_id
-  id          = "audit-logs-${each.key}"
+  id          = "audit-logs-prod"
+  location    = var.locations.logging
+}
+
+module "log-export-logbucket1" {
+  source      = "../../../modules/logging-bucket"
+  #for_each    = toset([for k, v in var.log_sinks : k if v.type == "logging"])
+  parent_type = "project"
+  parent      = module.log-export-project.project_id
+  id          = "audit-logs_non-prod-dev"
+  location    = var.locations.logging
+}
+
+module "log-export-logbucket2" {
+  source      = "../../../modules/logging-bucket"
+  #for_each    = toset([for k, v in var.log_sinks : k if v.type == "logging"])
+  parent_type = "project"
+  parent      = module.log-export-project.project_id
+  id          = "audit-logs_non-prod-qa"
   location    = var.locations.logging
 }
 

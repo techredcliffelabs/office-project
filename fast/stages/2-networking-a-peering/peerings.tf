@@ -14,11 +14,25 @@
  * limitations under the License.
  */
 
-module "peering-dev" {
+module "peering-transit-shared" {
   source        = "../../../modules/net-vpc-peering"
-  prefix        = "dev-peering-0"
-  local_network = module.dev-spoke-vpc.self_link
-  peer_network  = module.landing-vpc.self_link
+  prefix        = "transit-shared-peering"
+  local_network = module.transit-vpc.self_link
+  peer_network  = module.shared-resources-vpc.self_link
+  export_local_custom_routes = try(
+    var.peering_configs.shared-resources.export_local_custom_routes, null
+  )
+  export_peer_custom_routes = try(
+    var.peering_configs.shared-resources.export_peer_custom_routes, null
+  )
+}
+
+module "peering-transit-dev" {
+  source        = "../../../modules/net-vpc-peering"
+  prefix        = "transit-dev-peering"
+  local_network = module.transit-vpc.self_link
+  peer_network  = module.dev-vpc.self_link
+  #depends_on    = [module.peering-dev]
   export_local_custom_routes = try(
     var.peering_configs.dev.export_local_custom_routes, null
   )
@@ -27,12 +41,68 @@ module "peering-dev" {
   )
 }
 
-module "peering-prod" {
+module "peering-transit-qa" {
   source        = "../../../modules/net-vpc-peering"
-  prefix        = "prod-peering-0"
-  local_network = module.prod-spoke-vpc.self_link
-  peer_network  = module.landing-vpc.self_link
-  depends_on    = [module.peering-dev]
+  prefix        = "transit-qa-peering"
+  local_network = module.transit-vpc.self_link
+  peer_network  = module.qa-vpc.self_link
+  #depends_on    = [module.peering-dev]
+  export_local_custom_routes = try(
+    var.peering_configs.qa.export_local_custom_routes, null
+  )
+  export_peer_custom_routes = try(
+    var.peering_configs.qa.export_peer_custom_routes, null
+  )
+}
+
+module "peering-transit-prod" {
+  source        = "../../../modules/net-vpc-peering"
+  prefix        = "transit-prod-peering"
+  local_network = module.transit-vpc.self_link
+  peer_network  = module.prod-vpc.self_link
+  #depends_on    = [module.peering-dev]
+  export_local_custom_routes = try(
+    var.peering_configs.prod.export_local_custom_routes, null
+  )
+  export_peer_custom_routes = try(
+    var.peering_configs.prod.export_peer_custom_routes, null
+  )
+}
+
+module "peering-shared-resources-dev" {
+  source        = "../../../modules/net-vpc-peering"
+  prefix        = "shared-resources-dev-peering"
+  local_network = module.shared-resources-vpc.self_link
+  peer_network  = module.dev-vpc.self_link
+  #depends_on    = [module.peering-dev]
+  export_local_custom_routes = try(
+    var.peering_configs.dev.export_local_custom_routes, null
+  )
+  export_peer_custom_routes = try(
+    var.peering_configs.dev.export_peer_custom_routes, null
+  )
+}
+
+module "peering-shared-resources-qa" {
+  source        = "../../../modules/net-vpc-peering"
+  prefix        = "shared-resources-qa-peering"
+  local_network = module.shared-resources-vpc.self_link
+  peer_network  = module.qa-vpc.self_link
+  #depends_on    = [module.peering-dev]
+  export_local_custom_routes = try(
+    var.peering_configs.qa.export_local_custom_routes, null
+  )
+  export_peer_custom_routes = try(
+    var.peering_configs.qa.export_peer_custom_routes, null
+  )
+}
+
+module "peering-shared-resources-prod" {
+  source        = "../../../modules/net-vpc-peering"
+  prefix        = "shared-resources-prod-peering"
+  local_network = module.shared-resources-vpc.self_link
+  peer_network  = module.prod-vpc.self_link
+  #depends_on    = [module.peering-dev]
   export_local_custom_routes = try(
     var.peering_configs.prod.export_local_custom_routes, null
   )

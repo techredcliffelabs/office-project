@@ -1,0 +1,4 @@
+region: europe-west2
+ip_cidr_range: 10.151.3.0/24
+description: DR subnet for shared-resources vpc in europe region
+

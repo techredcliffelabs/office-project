@@ -82,3 +82,4 @@ locals {
 data "google_client_openid_userinfo" "provider_identity" {
   count = length(local.cicd_repositories) > 0 ? 1 : 0
 }
+

@@ -20,7 +20,7 @@ locals {
   )
   _factory_name = (
     try(var.firewall_policy_factory.policy_name, null) == null
-    ? "factory"
+    ? "net-a-vpn"
     : var.firewall_policy_factory.policy_name
   )
   _factory_rules = try(

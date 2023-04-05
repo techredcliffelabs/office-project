@@ -96,6 +96,8 @@ variable "folder_ids" {
     networking      = string
     networking-dev  = string
     networking-prod = string
+    non-prod = string
+    prod = string
   })
 }
 
@@ -194,8 +196,8 @@ variable "regions" {
     secondary = string
   })
   default = {
-    primary   = "europe-west1"
-    secondary = "europe-west4"
+    primary   = "us-central1"
+    secondary = "europe-west2"
   }
 }
 

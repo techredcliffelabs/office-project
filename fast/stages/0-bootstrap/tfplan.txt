@@ -1,0 +1,1210 @@
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+ <= read (data resources)
+
+Terraform will perform the following actions:
+
+  # google_organization_iam_binding.org_admin_delegated will be created
+  + resource "google_organization_iam_binding" "org_admin_delegated" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + org_id  = "119369546298"
+      + role    = "organizations/119369546298/roles/organizationIamAdmin"
+
+      + condition {
+          + description = "Automation service account delegated grants."
+          + expression  = "api.getAttribute('iam.googleapis.com/modifiedGrantsByRole', []).hasOnly(['roles/accesscontextmanager.policyAdmin','roles/compute.orgFirewallPolicyAdmin','roles/compute.xpnAdmin','roles/orgpolicy.policyAdmin','roles/resourcemanager.organizationViewer','organizations/119369546298/roles/tenantNetworkAdmin','roles/billing.admin','roles/billing.costsManager','roles/billing.user'])"
+          + title       = "automation_sa_delegated_grants"
+        }
+    }
+
+  # google_storage_bucket_object.providers["0-bootstrap"] will be created
+  + resource "google_storage_bucket_object" "providers" {
+      + bucket         = "lz-prod-iac-core-outputs-0"
+      + content        = (sensitive value)
+      + content_type   = (known after apply)
+      + crc32c         = (known after apply)
+      + detect_md5hash = "different hash"
+      + id             = (known after apply)
+      + kms_key_name   = (known after apply)
+      + md5hash        = (known after apply)
+      + media_link     = (known after apply)
+      + name           = "providers/0-bootstrap-providers.tf"
+      + output_name    = (known after apply)
+      + self_link      = (known after apply)
+      + storage_class  = (known after apply)
+    }
+
+  # google_storage_bucket_object.providers["0-bootstrap-tenant"] will be created
+  + resource "google_storage_bucket_object" "providers" {
+      + bucket         = "lz-prod-iac-core-outputs-0"
+      + content        = (sensitive value)
+      + content_type   = (known after apply)
+      + crc32c         = (known after apply)
+      + detect_md5hash = "different hash"
+      + id             = (known after apply)
+      + kms_key_name   = (known after apply)
+      + md5hash        = (known after apply)
+      + media_link     = (known after apply)
+      + name           = "providers/0-bootstrap-tenant-providers.tf"
+      + output_name    = (known after apply)
+      + self_link      = (known after apply)
+      + storage_class  = (known after apply)
+    }
+
+  # google_storage_bucket_object.providers["1-resman"] will be created
+  + resource "google_storage_bucket_object" "providers" {
+      + bucket         = "lz-prod-iac-core-outputs-0"
+      + content        = (sensitive value)
+      + content_type   = (known after apply)
+      + crc32c         = (known after apply)
+      + detect_md5hash = "different hash"
+      + id             = (known after apply)
+      + kms_key_name   = (known after apply)
+      + md5hash        = (known after apply)
+      + media_link     = (known after apply)
+      + name           = "providers/1-resman-providers.tf"
+      + output_name    = (known after apply)
+      + self_link      = (known after apply)
+      + storage_class  = (known after apply)
+    }
+
+  # google_storage_bucket_object.tfvars will be created
+  + resource "google_storage_bucket_object" "tfvars" {
+      + bucket         = "lz-prod-iac-core-outputs-0"
+      + content        = (sensitive value)
+      + content_type   = (known after apply)
+      + crc32c         = (known after apply)
+      + detect_md5hash = "different hash"
+      + id             = (known after apply)
+      + kms_key_name   = (known after apply)
+      + md5hash        = (known after apply)
+      + media_link     = (known after apply)
+      + name           = "tfvars/0-bootstrap.auto.tfvars.json"
+      + output_name    = (known after apply)
+      + self_link      = (known after apply)
+      + storage_class  = (known after apply)
+    }
+
+  # google_storage_bucket_object.tfvars_globals will be created
+  + resource "google_storage_bucket_object" "tfvars_globals" {
+      + bucket         = "lz-prod-iac-core-outputs-0"
+      + content        = (sensitive value)
+      + content_type   = (known after apply)
+      + crc32c         = (known after apply)
+      + detect_md5hash = "different hash"
+      + id             = (known after apply)
+      + kms_key_name   = (known after apply)
+      + md5hash        = (known after apply)
+      + media_link     = (known after apply)
+      + name           = "tfvars/globals.auto.tfvars.json"
+      + output_name    = (known after apply)
+      + self_link      = (known after apply)
+      + storage_class  = (known after apply)
+    }
+
+  # module.automation-project.data.google_bigquery_default_service_account.bq_sa[0] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "google_bigquery_default_service_account" "bq_sa" {
+      + email   = (known after apply)
+      + id      = (known after apply)
+      + member  = (known after apply)
+      + project = "lz-prod-iac-core-0"
+    }
+
+  # module.automation-project.data.google_storage_project_service_account.gcs_sa[0] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "google_storage_project_service_account" "gcs_sa" {
+      + email_address = (known after apply)
+      + id            = (known after apply)
+      + member        = (known after apply)
+      + project       = "lz-prod-iac-core-0"
+    }
+
+  # module.automation-project.google_project.project[0] will be created
+  + resource "google_project" "project" {
+      + auto_create_network = false
+      + billing_account     = "013816-12836E-7ECD57"
+      + id                  = (known after apply)
+      + name                = "lz-prod-iac-core-0"
+      + number              = (known after apply)
+      + org_id              = "119369546298"
+      + project_id          = "lz-prod-iac-core-0"
+      + skip_delete         = false
+    }
+
+  # module.automation-project.google_project_iam_binding.authoritative["roles/cloudbuild.builds.editor"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + project = "lz-prod-iac-core-0"
+      + role    = "roles/cloudbuild.builds.editor"
+    }
+
+  # module.automation-project.google_project_iam_binding.authoritative["roles/iam.serviceAccountAdmin"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + project = "lz-prod-iac-core-0"
+      + role    = "roles/iam.serviceAccountAdmin"
+    }
+
+  # module.automation-project.google_project_iam_binding.authoritative["roles/iam.serviceAccountTokenCreator"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "group:gcp-billing-admins@wetranscloud.org",
+        ]
+      + project = "lz-prod-iac-core-0"
+      + role    = "roles/iam.serviceAccountTokenCreator"
+    }
+
+  # module.automation-project.google_project_iam_binding.authoritative["roles/iam.workloadIdentityPoolAdmin"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "group:gcp-billing-admins@wetranscloud.org",
+          + "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + project = "lz-prod-iac-core-0"
+      + role    = "roles/iam.workloadIdentityPoolAdmin"
+    }
+
+  # module.automation-project.google_project_iam_binding.authoritative["roles/owner"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-bootstrap-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + project = "lz-prod-iac-core-0"
+      + role    = "roles/owner"
+    }
+
+  # module.automation-project.google_project_iam_binding.authoritative["roles/source.admin"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + project = "lz-prod-iac-core-0"
+      + role    = "roles/source.admin"
+    }
+
+  # module.automation-project.google_project_iam_binding.authoritative["roles/storage.admin"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + project = "lz-prod-iac-core-0"
+      + role    = "roles/storage.admin"
+    }
+
+  # module.automation-project.google_project_iam_member.servicenetworking[0] will be created
+  + resource "google_project_iam_member" "servicenetworking" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = (known after apply)
+      + project = "lz-prod-iac-core-0"
+      + role    = "roles/servicenetworking.serviceAgent"
+    }
+
+  # module.automation-project.google_project_service.project_services["accesscontextmanager.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "accesscontextmanager.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["bigquery.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "bigquery.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["bigqueryreservation.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "bigqueryreservation.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["bigquerystorage.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "bigquerystorage.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["billingbudgets.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "billingbudgets.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["cloudbilling.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "cloudbilling.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["cloudbuild.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "cloudbuild.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["cloudkms.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "cloudkms.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["cloudresourcemanager.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "cloudresourcemanager.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["compute.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "compute.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["container.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "container.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["essentialcontacts.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "essentialcontacts.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["iam.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "iam.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["iamcredentials.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "iamcredentials.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["orgpolicy.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "orgpolicy.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["pubsub.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "pubsub.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["servicenetworking.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "servicenetworking.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["serviceusage.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "serviceusage.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["sourcerepo.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "sourcerepo.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["stackdriver.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "stackdriver.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["storage-component.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "storage-component.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["storage.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "storage.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service.project_services["sts.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-iac-core-0"
+      + service                    = "sts.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service_identity.jit_si["cloudbuild.googleapis.com"] will be created
+  + resource "google_project_service_identity" "jit_si" {
+      + email   = (known after apply)
+      + id      = (known after apply)
+      + project = "lz-prod-iac-core-0"
+      + service = "cloudbuild.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service_identity.jit_si["pubsub.googleapis.com"] will be created
+  + resource "google_project_service_identity" "jit_si" {
+      + email   = (known after apply)
+      + id      = (known after apply)
+      + project = "lz-prod-iac-core-0"
+      + service = "pubsub.googleapis.com"
+    }
+
+  # module.automation-project.google_project_service_identity.servicenetworking[0] will be created
+  + resource "google_project_service_identity" "servicenetworking" {
+      + email   = (known after apply)
+      + id      = (known after apply)
+      + project = "lz-prod-iac-core-0"
+      + service = "servicenetworking.googleapis.com"
+    }
+
+  # module.automation-tf-bootstrap-gcs.google_storage_bucket.bucket will be created
+  + resource "google_storage_bucket" "bucket" {
+      + force_destroy               = false
+      + id                          = (known after apply)
+      + location                    = "EU"
+      + name                        = "lz-prod-iac-core-bootstrap-0"
+      + project                     = "lz-prod-iac-core-0"
+      + public_access_prevention    = (known after apply)
+      + self_link                   = (known after apply)
+      + storage_class               = "MULTI_REGIONAL"
+      + uniform_bucket_level_access = true
+      + url                         = (known after apply)
+
+      + versioning {
+          + enabled = true
+        }
+
+      + website {
+          + main_page_suffix = (known after apply)
+          + not_found_page   = (known after apply)
+        }
+    }
+
+  # module.automation-tf-bootstrap-sa.google_service_account.service_account[0] will be created
+  + resource "google_service_account" "service_account" {
+      + account_id   = "lz-prod-bootstrap-0"
+      + disabled     = false
+      + display_name = "Terraform organization bootstrap service account."
+      + email        = (known after apply)
+      + id           = (known after apply)
+      + member       = (known after apply)
+      + name         = (known after apply)
+      + project      = "lz-prod-iac-core-0"
+      + unique_id    = (known after apply)
+    }
+
+  # module.automation-tf-bootstrap-sa.google_service_account_iam_binding.roles["roles/iam.serviceAccountTokenCreator"] will be created
+  + resource "google_service_account_iam_binding" "roles" {
+      + etag               = (known after apply)
+      + id                 = (known after apply)
+      + role               = "roles/iam.serviceAccountTokenCreator"
+      + service_account_id = (known after apply)
+    }
+
+  # module.automation-tf-bootstrap-sa.google_storage_bucket_iam_member.bucket-roles["lz-prod-iac-core-outputs-0-roles/storage.admin"] will be created
+  + resource "google_storage_bucket_iam_member" "bucket-roles" {
+      + bucket = "lz-prod-iac-core-outputs-0"
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = (known after apply)
+      + role   = "roles/storage.admin"
+    }
+
+  # module.automation-tf-output-gcs.google_storage_bucket.bucket will be created
+  + resource "google_storage_bucket" "bucket" {
+      + force_destroy               = false
+      + id                          = (known after apply)
+      + location                    = "EU"
+      + name                        = "lz-prod-iac-core-outputs-0"
+      + project                     = "lz-prod-iac-core-0"
+      + public_access_prevention    = (known after apply)
+      + self_link                   = (known after apply)
+      + storage_class               = "MULTI_REGIONAL"
+      + uniform_bucket_level_access = true
+      + url                         = (known after apply)
+
+      + versioning {
+          + enabled = true
+        }
+
+      + website {
+          + main_page_suffix = (known after apply)
+          + not_found_page   = (known after apply)
+        }
+    }
+
+  # module.automation-tf-resman-gcs.google_storage_bucket.bucket will be created
+  + resource "google_storage_bucket" "bucket" {
+      + force_destroy               = false
+      + id                          = (known after apply)
+      + location                    = "EU"
+      + name                        = "lz-prod-iac-core-resman-0"
+      + project                     = "lz-prod-iac-core-0"
+      + public_access_prevention    = (known after apply)
+      + self_link                   = (known after apply)
+      + storage_class               = "MULTI_REGIONAL"
+      + uniform_bucket_level_access = true
+      + url                         = (known after apply)
+
+      + versioning {
+          + enabled = true
+        }
+
+      + website {
+          + main_page_suffix = (known after apply)
+          + not_found_page   = (known after apply)
+        }
+    }
+
+  # module.automation-tf-resman-gcs.google_storage_bucket_iam_binding.bindings["roles/storage.objectAdmin"] will be created
+  + resource "google_storage_bucket_iam_binding" "bindings" {
+      + bucket  = "lz-prod-iac-core-resman-0"
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + role    = "roles/storage.objectAdmin"
+    }
+
+  # module.automation-tf-resman-sa.google_service_account.service_account[0] will be created
+  + resource "google_service_account" "service_account" {
+      + account_id   = "lz-prod-resman-0"
+      + disabled     = false
+      + display_name = "Terraform stage 1 resman service account."
+      + email        = (known after apply)
+      + id           = (known after apply)
+      + member       = (known after apply)
+      + name         = (known after apply)
+      + project      = "lz-prod-iac-core-0"
+      + unique_id    = (known after apply)
+    }
+
+  # module.automation-tf-resman-sa.google_storage_bucket_iam_member.bucket-roles["lz-prod-iac-core-outputs-0-roles/storage.admin"] will be created
+  + resource "google_storage_bucket_iam_member" "bucket-roles" {
+      + bucket = "lz-prod-iac-core-outputs-0"
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = (known after apply)
+      + role   = "roles/storage.admin"
+    }
+
+  # module.billing-export-dataset[0].google_bigquery_dataset.default will be created
+  + resource "google_bigquery_dataset" "default" {
+      + creation_time              = (known after apply)
+      + dataset_id                 = "billing_export"
+      + delete_contents_on_destroy = false
+      + description                = "Terraform managed."
+      + etag                       = (known after apply)
+      + friendly_name              = "Billing export."
+      + id                         = (known after apply)
+      + labels                     = (known after apply)
+      + last_modified_time         = (known after apply)
+      + location                   = "EU"
+      + project                    = "lz-prod-billing-exp-0"
+      + self_link                  = (known after apply)
+
+      + access {
+          + domain         = (known after apply)
+          + group_by_email = (known after apply)
+          + role           = (known after apply)
+          + special_group  = (known after apply)
+          + user_by_email  = (known after apply)
+
+          + dataset {
+              + target_types = (known after apply)
+
+              + dataset {
+                  + dataset_id = (known after apply)
+                  + project_id = (known after apply)
+                }
+            }
+
+          + routine {
+              + dataset_id = (known after apply)
+              + project_id = (known after apply)
+              + routine_id = (known after apply)
+            }
+
+          + view {
+              + dataset_id = (known after apply)
+              + project_id = (known after apply)
+              + table_id   = (known after apply)
+            }
+        }
+    }
+
+  # module.billing-export-project[0].data.google_bigquery_default_service_account.bq_sa[0] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "google_bigquery_default_service_account" "bq_sa" {
+      + email   = (known after apply)
+      + id      = (known after apply)
+      + member  = (known after apply)
+      + project = "lz-prod-billing-exp-0"
+    }
+
+  # module.billing-export-project[0].data.google_storage_project_service_account.gcs_sa[0] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "google_storage_project_service_account" "gcs_sa" {
+      + email_address = (known after apply)
+      + id            = (known after apply)
+      + member        = (known after apply)
+      + project       = "lz-prod-billing-exp-0"
+    }
+
+  # module.billing-export-project[0].google_project.project[0] will be created
+  + resource "google_project" "project" {
+      + auto_create_network = false
+      + billing_account     = "013816-12836E-7ECD57"
+      + id                  = (known after apply)
+      + name                = "lz-prod-billing-exp-0"
+      + number              = (known after apply)
+      + org_id              = "119369546298"
+      + project_id          = "lz-prod-billing-exp-0"
+      + skip_delete         = false
+    }
+
+  # module.billing-export-project[0].google_project_iam_binding.authoritative["roles/owner"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-bootstrap-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + project = "lz-prod-billing-exp-0"
+      + role    = "roles/owner"
+    }
+
+  # module.billing-export-project[0].google_project_service.project_services["bigquery.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-billing-exp-0"
+      + service                    = "bigquery.googleapis.com"
+    }
+
+  # module.billing-export-project[0].google_project_service.project_services["bigquerydatatransfer.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-billing-exp-0"
+      + service                    = "bigquerydatatransfer.googleapis.com"
+    }
+
+  # module.billing-export-project[0].google_project_service.project_services["storage.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-billing-exp-0"
+      + service                    = "storage.googleapis.com"
+    }
+
+  # module.log-export-logbucket["audit-logs"].google_logging_project_bucket_config.bucket[0] will be created
+  + resource "google_logging_project_bucket_config" "bucket" {
+      + bucket_id       = "audit-logs-audit-logs"
+      + description     = (known after apply)
+      + id              = (known after apply)
+      + lifecycle_state = (known after apply)
+      + location        = "global"
+      + name            = (known after apply)
+      + project         = "lz-prod-audit-logs-0"
+      + retention_days  = 30
+    }
+
+  # module.log-export-logbucket["vpc-sc"].google_logging_project_bucket_config.bucket[0] will be created
+  + resource "google_logging_project_bucket_config" "bucket" {
+      + bucket_id       = "audit-logs-vpc-sc"
+      + description     = (known after apply)
+      + id              = (known after apply)
+      + lifecycle_state = (known after apply)
+      + location        = "global"
+      + name            = (known after apply)
+      + project         = "lz-prod-audit-logs-0"
+      + retention_days  = 30
+    }
+
+  # module.log-export-project.data.google_bigquery_default_service_account.bq_sa[0] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "google_bigquery_default_service_account" "bq_sa" {
+      + email   = (known after apply)
+      + id      = (known after apply)
+      + member  = (known after apply)
+      + project = "lz-prod-audit-logs-0"
+    }
+
+  # module.log-export-project.data.google_storage_project_service_account.gcs_sa[0] will be read during apply
+  # (depends on a resource or a module with changes pending)
+ <= data "google_storage_project_service_account" "gcs_sa" {
+      + email_address = (known after apply)
+      + id            = (known after apply)
+      + member        = (known after apply)
+      + project       = "lz-prod-audit-logs-0"
+    }
+
+  # module.log-export-project.google_project.project[0] will be created
+  + resource "google_project" "project" {
+      + auto_create_network = false
+      + billing_account     = "013816-12836E-7ECD57"
+      + id                  = (known after apply)
+      + name                = "lz-prod-audit-logs-0"
+      + number              = (known after apply)
+      + org_id              = "119369546298"
+      + project_id          = "lz-prod-audit-logs-0"
+      + skip_delete         = false
+    }
+
+  # module.log-export-project.google_project_iam_binding.authoritative["roles/owner"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-bootstrap-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + project = "lz-prod-audit-logs-0"
+      + role    = "roles/owner"
+    }
+
+  # module.log-export-project.google_project_service.project_services["bigquery.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-audit-logs-0"
+      + service                    = "bigquery.googleapis.com"
+    }
+
+  # module.log-export-project.google_project_service.project_services["stackdriver.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-audit-logs-0"
+      + service                    = "stackdriver.googleapis.com"
+    }
+
+  # module.log-export-project.google_project_service.project_services["storage.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "lz-prod-audit-logs-0"
+      + service                    = "storage.googleapis.com"
+    }
+
+  # module.organization.google_logging_organization_sink.sink["audit-logs"] will be created
+  + resource "google_logging_organization_sink" "sink" {
+      + description      = "audit-logs (Terraform-managed)."
+      + destination      = (known after apply)
+      + disabled         = false
+      + filter           = "logName:\"/logs/cloudaudit.googleapis.com%2Factivity\" OR logName:\"/logs/cloudaudit.googleapis.com%2Fsystem_event\""
+      + id               = (known after apply)
+      + include_children = true
+      + name             = "audit-logs"
+      + org_id           = "119369546298"
+      + writer_identity  = (known after apply)
+
+      + bigquery_options {
+          + use_partitioned_tables = (known after apply)
+        }
+    }
+
+  # module.organization.google_logging_organization_sink.sink["vpc-sc"] will be created
+  + resource "google_logging_organization_sink" "sink" {
+      + description      = "vpc-sc (Terraform-managed)."
+      + destination      = (known after apply)
+      + disabled         = false
+      + filter           = "protoPayload.metadata.@type=\"type.googleapis.com/google.cloud.audit.VpcServiceControlAuditMetadata\""
+      + id               = (known after apply)
+      + include_children = true
+      + name             = "vpc-sc"
+      + org_id           = "119369546298"
+      + writer_identity  = (known after apply)
+
+      + bigquery_options {
+          + use_partitioned_tables = (known after apply)
+        }
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/browser"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "domain:wetranscloud.org",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/browser"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/cloudasset.owner"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "group:gcp-billing-admins@wetranscloud.org",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/cloudasset.owner"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/cloudsupport.techSupportEditor"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "group:gcp-billing-admins@wetranscloud.org",
+          + "group:gcp-devops@wetranscloud.org",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/cloudsupport.techSupportEditor"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/iam.securityReviewer"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "group:gcp-billing-admins@wetranscloud.org",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/iam.securityReviewer"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/logging.admin"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "group:gcp-billing-admins@wetranscloud.org",
+          + "serviceAccount:lz-prod-bootstrap-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+          + "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/logging.admin"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/logging.viewer"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "group:gcp-devops@wetranscloud.org",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/logging.viewer"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/monitoring.viewer"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "group:gcp-devops@wetranscloud.org",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/monitoring.viewer"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/owner"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + org_id = "119369546298"
+      + role   = "roles/owner"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/resourcemanager.folderAdmin"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/resourcemanager.folderAdmin"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/resourcemanager.organizationAdmin"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-bootstrap-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/resourcemanager.organizationAdmin"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/resourcemanager.projectCreator"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-bootstrap-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+          + "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/resourcemanager.projectCreator"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/resourcemanager.projectMover"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-bootstrap-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/resourcemanager.projectMover"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/resourcemanager.tagAdmin"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/resourcemanager.tagAdmin"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/resourcemanager.tagUser"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/resourcemanager.tagUser"
+    }
+
+  # module.organization.google_organization_iam_binding.authoritative["roles/securitycenter.admin"] will be created
+  + resource "google_organization_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = [
+          + "group:gcp-billing-admins@wetranscloud.org",
+        ]
+      + org_id  = "119369546298"
+      + role    = "roles/securitycenter.admin"
+    }
+
+  # module.organization.google_organization_iam_custom_role.roles["organizationIamAdmin"] will be created
+  + resource "google_organization_iam_custom_role" "roles" {
+      + deleted     = (known after apply)
+      + description = "Terraform-managed."
+      + id          = (known after apply)
+      + name        = (known after apply)
+      + org_id      = "119369546298"
+      + permissions = [
+          + "resourcemanager.organizations.get",
+          + "resourcemanager.organizations.getIamPolicy",
+          + "resourcemanager.organizations.setIamPolicy",
+        ]
+      + role_id     = "organizationIamAdmin"
+      + stage       = "GA"
+      + title       = "Custom role organizationIamAdmin"
+    }
+
+  # module.organization.google_organization_iam_custom_role.roles["serviceProjectNetworkAdmin"] will be created
+  + resource "google_organization_iam_custom_role" "roles" {
+      + deleted     = (known after apply)
+      + description = "Terraform-managed."
+      + id          = (known after apply)
+      + name        = (known after apply)
+      + org_id      = "119369546298"
+      + permissions = [
+          + "compute.globalOperations.get",
+          + "compute.networks.get",
+          + "compute.networks.updatePeering",
+          + "compute.organizations.disableXpnResource",
+          + "compute.organizations.enableXpnResource",
+          + "compute.projects.get",
+          + "compute.subnetworks.getIamPolicy",
+          + "compute.subnetworks.setIamPolicy",
+          + "dns.networks.bindPrivateDNSZone",
+          + "resourcemanager.projects.get",
+        ]
+      + role_id     = "serviceProjectNetworkAdmin"
+      + stage       = "GA"
+      + title       = "Custom role serviceProjectNetworkAdmin"
+    }
+
+  # module.organization.google_organization_iam_custom_role.roles["tenantNetworkAdmin"] will be created
+  + resource "google_organization_iam_custom_role" "roles" {
+      + deleted     = (known after apply)
+      + description = "Terraform-managed."
+      + id          = (known after apply)
+      + name        = (known after apply)
+      + org_id      = "119369546298"
+      + permissions = [
+          + "compute.globalOperations.get",
+        ]
+      + role_id     = "tenantNetworkAdmin"
+      + stage       = "GA"
+      + title       = "Custom role tenantNetworkAdmin"
+    }
+
+  # module.organization.google_organization_iam_member.additive["roles/accesscontextmanager.policyAdmin-group:gcp-billing-admins@wetranscloud.org"] will be created
+  + resource "google_organization_iam_member" "additive" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "group:gcp-billing-admins@wetranscloud.org"
+      + org_id = "119369546298"
+      + role   = "roles/accesscontextmanager.policyAdmin"
+    }
+
+  # module.organization.google_organization_iam_member.additive["roles/billing.admin-group:gcp-billing-admins@wetranscloud.org"] will be created
+  + resource "google_organization_iam_member" "additive" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "group:gcp-billing-admins@wetranscloud.org"
+      + org_id = "119369546298"
+      + role   = "roles/billing.admin"
+    }
+
+  # module.organization.google_organization_iam_member.additive["roles/billing.admin-serviceAccount:lz-prod-bootstrap-0@lz-prod-iac-core-0.iam.gserviceaccount.com"] will be created
+  + resource "google_organization_iam_member" "additive" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "serviceAccount:lz-prod-bootstrap-0@lz-prod-iac-core-0.iam.gserviceaccount.com"
+      + org_id = "119369546298"
+      + role   = "roles/billing.admin"
+    }
+
+  # module.organization.google_organization_iam_member.additive["roles/billing.admin-serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com"] will be created
+  + resource "google_organization_iam_member" "additive" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com"
+      + org_id = "119369546298"
+      + role   = "roles/billing.admin"
+    }
+
+  # module.organization.google_organization_iam_member.additive["roles/billing.costsManager-group:gcp-billing-admins@wetranscloud.org"] will be created
+  + resource "google_organization_iam_member" "additive" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "group:gcp-billing-admins@wetranscloud.org"
+      + org_id = "119369546298"
+      + role   = "roles/billing.costsManager"
+    }
+
+  # module.organization.google_organization_iam_member.additive["roles/billing.costsManager-serviceAccount:lz-prod-bootstrap-0@lz-prod-iac-core-0.iam.gserviceaccount.com"] will be created
+  + resource "google_organization_iam_member" "additive" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "serviceAccount:lz-prod-bootstrap-0@lz-prod-iac-core-0.iam.gserviceaccount.com"
+      + org_id = "119369546298"
+      + role   = "roles/billing.costsManager"
+    }
+
+  # module.organization.google_organization_iam_member.additive["roles/billing.costsManager-serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com"] will be created
+  + resource "google_organization_iam_member" "additive" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com"
+      + org_id = "119369546298"
+      + role   = "roles/billing.costsManager"
+    }
+
+  # module.organization.google_organization_iam_member.additive["roles/compute.orgFirewallPolicyAdmin-group:gcp-billing-admins@wetranscloud.org"] will be created
+  + resource "google_organization_iam_member" "additive" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "group:gcp-billing-admins@wetranscloud.org"
+      + org_id = "119369546298"
+      + role   = "roles/compute.orgFirewallPolicyAdmin"
+    }
+
+  # module.organization.google_organization_iam_member.additive["roles/compute.xpnAdmin-group:gcp-billing-admins@wetranscloud.org"] will be created
+  + resource "google_organization_iam_member" "additive" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "group:gcp-billing-admins@wetranscloud.org"
+      + org_id = "119369546298"
+      + role   = "roles/compute.xpnAdmin"
+    }
+
+  # module.organization.google_organization_iam_member.additive["roles/iam.organizationRoleAdmin-group:gcp-billing-admins@wetranscloud.org"] will be created
+  + resource "google_organization_iam_member" "additive" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "group:gcp-billing-admins@wetranscloud.org"
+      + org_id = "119369546298"
+      + role   = "roles/iam.organizationRoleAdmin"
+    }
+
+  # module.organization.google_organization_iam_member.additive["roles/iam.organizationRoleAdmin-serviceAccount:lz-prod-bootstrap-0@lz-prod-iac-core-0.iam.gserviceaccount.com"] will be created
+  + resource "google_organization_iam_member" "additive" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "serviceAccount:lz-prod-bootstrap-0@lz-prod-iac-core-0.iam.gserviceaccount.com"
+      + org_id = "119369546298"
+      + role   = "roles/iam.organizationRoleAdmin"
+    }
+
+  # module.organization.google_organization_iam_member.additive["roles/orgpolicy.policyAdmin-group:gcp-billing-admins@wetranscloud.org"] will be created
+  + resource "google_organization_iam_member" "additive" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "group:gcp-billing-admins@wetranscloud.org"
+      + org_id = "119369546298"
+      + role   = "roles/orgpolicy.policyAdmin"
+    }
+
+  # module.organization.google_organization_iam_member.additive["roles/orgpolicy.policyAdmin-serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com"] will be created
+  + resource "google_organization_iam_member" "additive" {
+      + etag   = (known after apply)
+      + id     = (known after apply)
+      + member = "serviceAccount:lz-prod-resman-0@lz-prod-iac-core-0.iam.gserviceaccount.com"
+      + org_id = "119369546298"
+      + role   = "roles/orgpolicy.policyAdmin"
+    }
+
+  # module.organization.google_project_iam_member.bucket-sinks-binding["audit-logs"] will be created
+  + resource "google_project_iam_member" "bucket-sinks-binding" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = (known after apply)
+      + project = (known after apply)
+      + role    = "roles/logging.bucketWriter"
+
+      + condition {
+          + description = (known after apply)
+          + expression  = (known after apply)
+          + title       = "audit-logs bucket writer"
+        }
+    }
+
+  # module.organization.google_project_iam_member.bucket-sinks-binding["vpc-sc"] will be created
+  + resource "google_project_iam_member" "bucket-sinks-binding" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + member  = (known after apply)
+      + project = (known after apply)
+      + role    = "roles/logging.bucketWriter"
+
+      + condition {
+          + description = (known after apply)
+          + expression  = (known after apply)
+          + title       = "vpc-sc bucket writer"
+        }
+    }
+
+Plan: 98 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + automation      = {
+      + federated_identity_pool      = null
+      + federated_identity_providers = {}
+      + outputs_bucket               = "lz-prod-iac-core-outputs-0"
+      + project_id                   = "lz-prod-iac-core-0"
+      + project_number               = (known after apply)
+    }
+  + billing_dataset = (known after apply)
+  + tfvars          = (sensitive value)

@@ -1,0 +1,7 @@
+# skip boilerplate check
+
+region: us-central1
+ip_cidr_range: 10.150.0.0/24
+description: Default subnet for transit vpc in us region
+
+

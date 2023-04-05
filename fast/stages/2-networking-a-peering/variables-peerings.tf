@@ -23,7 +23,19 @@ variable "peering_configs" {
     export_peer_custom_routes  = bool
   }))
   default = {
+    transit = {
+      export_local_custom_routes = true
+      export_peer_custom_routes  = true
+    }
+    shared-resources = {
+      export_local_custom_routes = true
+      export_peer_custom_routes  = true
+    }
     dev = {
+      export_local_custom_routes = true
+      export_peer_custom_routes  = true
+    }
+    qa = {
       export_local_custom_routes = true
       export_peer_custom_routes  = true
     }
@@ -31,6 +43,7 @@ variable "peering_configs" {
       export_local_custom_routes = true
       export_peer_custom_routes  = true
     }
+
   }
   nullable = false
 }

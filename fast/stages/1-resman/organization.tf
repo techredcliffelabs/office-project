@@ -67,8 +67,7 @@ module "organization" {
   )
 
   # sample subset of useful organization policies, edit to suit requirements
-  org_policies = {
-    "iam.allowedPolicyMemberDomains" = { allow = { values = local.all_drs_domains } }
+  #org_policies = {"iam.allowedPolicyMemberDomains" = { allow = { values = local.all_drs_domains } }}
 
     #"gcp.resourceLocations" = {
     #   allow = { values = local.allowed_regions }
@@ -81,7 +80,7 @@ module "organization" {
     #     ]
     #   }
     # }
-  }
+  
   org_policies_data_path = "${var.data_dir}/org-policies"
 
   # do not assign tagViewer or tagUser roles here on tag keys and values as

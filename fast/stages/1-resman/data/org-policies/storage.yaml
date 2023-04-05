@@ -4,3 +4,6 @@
 
 storage.uniformBucketLevelAccess:
   enforce: true
+
+storage.publicAccessPrevention:
+  enforce: true

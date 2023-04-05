@@ -153,7 +153,8 @@ variable "fast_features" {
     gke             = optional(bool, false)
     project_factory = optional(bool, false)
     sandbox         = optional(bool, false)
-    teams           = optional(bool, false)
+    non-prod           = optional(bool, false)
+    prod           = optional(bool, false)
   })
   default  = {}
   nullable = false
@@ -253,3 +254,4 @@ variable "team_folders" {
   }))
   default = null
 }
+

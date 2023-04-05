@@ -24,11 +24,16 @@ compute.vmExternalIpAccess:
 # compute.disableInternetNetworkEndpointGroup:
 #   enforce: true
 
-# compute.disableNestedVirtualization:
-#   enforce: true
+compute.disableNestedVirtualization:
+  enforce: true
 
-# compute.disableSerialPortAccess:
-#   enforce: true
+compute.disableSerialPortAccess:
+  enforce: true
+
+compute.disableVpcExternalIpv6:
+  enforce: true
+
+  
 
 # compute.restrictCloudNATUsage:
 #   deny:
@@ -42,13 +47,10 @@ compute.vmExternalIpAccess:
 #   deny:
 #     all: true
 
-# compute.restrictProtocolForwardingCreationForTypes:
-#   deny:
-#     all: true
+compute.restrictProtocolForwardingCreationForTypes:
+  deny:
+    all: true
 
-# compute.restrictSharedVpcHostProjects:
-#   deny:
-#     all: true
 
 # compute.restrictSharedVpcSubnetworks:
 #   deny:
@@ -62,12 +64,20 @@ compute.vmExternalIpAccess:
 #   deny:
 #     all: true
 
-# compute.restrictXpnProjectLienRemoval:
-#   enforce: true
+compute.restrictXpnProjectLienRemoval:
+  enforce: true
 
-# compute.setNewProjectDefaultToZonalDNSOnly:
-#   enforce: true
+compute.setNewProjectDefaultToZonalDNSOnly:
+  enforce: true
 
 # compute.vmCanIpForward:
 #   deny:
 #     all: true
+
+essentialcontacts.allowedContactDomains:
+  allow:
+    all: true
+
+#compute.restrictSharedVpcHostProjects:
+#  deny:
+#    all: true

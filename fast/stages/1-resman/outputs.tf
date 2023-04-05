@@ -77,24 +77,12 @@ locals {
       gke-dev            = try(module.branch-gke-dev-folder.0.id, null)
       gke-prod           = try(module.branch-gke-prod-folder.0.id, null)
       networking         = try(module.branch-network-folder.id, null)
-      networking-dev     = try(module.branch-network-dev-folder.id, null)
-      networking-prod    = try(module.branch-network-prod-folder.id, null)
+      #networking-dev     = try(module.branch-network-dev-folder.id, null)
+      #networking-prod    = try(module.branch-network-prod-folder.id, null)
       sandbox            = try(module.branch-sandbox-folder.0.id, null)
       security           = try(module.branch-security-folder.id, null)
-      teams              = try(module.branch-teams-folder.0.id, null)
+      #non-prod              = try(module.branch-non-prod-folder.0.id, null)
     },
-    {
-      for k, v in module.branch-teams-team-folder :
-      "team-${k}" => v.id
-    },
-    {
-      for k, v in module.branch-teams-team-dev-folder :
-      "team-${k}-dev" => v.id
-    },
-    {
-      for k, v in module.branch-teams-team-prod-folder :
-      "team-${k}-prod" => v.id
-    }
   )
   providers = merge(
     {
@@ -161,7 +149,7 @@ locals {
         sa            = module.branch-sandbox-sa.0.email
       })
     },
-    !var.fast_features.teams ? {} : merge(
+    /*!var.fast_features.teams ? {} : merge(
       {
         "3-teams" = templatefile(local._tpl_providers, {
           backend_extra = null
@@ -179,7 +167,7 @@ locals {
           sa            = v.email
         })
       }
-    )
+    )*/
   )
   service_accounts = merge(
     {
@@ -192,11 +180,9 @@ locals {
       project-factory-prod = try(module.branch-pf-prod-sa.0.email, null)
       sandbox              = try(module.branch-sandbox-sa.0.email, null)
       security             = module.branch-security-sa.email
-      teams                = try(module.branch-teams-sa.0.email, null)
+      #non-prod                = try(module.branch-non-prod-sa.0.email, null)
     },
-    {
-      for k, v in module.branch-teams-team-sa : "team-${k}" => v.email
-    },
+    
   )
   tfvars = {
     folder_ids       = local.folder_ids
@@ -313,16 +299,6 @@ output "security" {
   }
 }
 
-output "teams" {
-  description = "Data for the teams stage."
-  value = {
-    for k, v in module.branch-teams-team-folder : k => {
-      folder          = v.id
-      gcs_bucket      = module.branch-teams-team-gcs[k].name
-      service_account = module.branch-teams-team-sa[k].email
-    }
-  }
-}
 
 # ready to use variable values for subsequent stages
 output "tfvars" {

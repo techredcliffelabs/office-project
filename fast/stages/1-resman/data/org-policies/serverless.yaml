@@ -7,6 +7,13 @@ run.allowedIngress:
     values:
     - is:internal
 
+cloudbuild.allowedWorkerPools:
+  allow:
+    values:
+      #- is:ALLOW_INTERNAL_ONLY
+      - under:organizations/119369546298
+         
+
 # run.allowedVPCEgress:
 #   allow:
 #     values:
