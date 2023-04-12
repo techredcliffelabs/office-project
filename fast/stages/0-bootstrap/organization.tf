@@ -39,15 +39,22 @@ locals {
       local._iam_bootstrap_user
     )
     "roles/resourcemanager.projectCreator" = concat(
-      [
-        module.automation-tf-bootstrap-sa.iam_email,
-        module.automation-tf-resman-sa.iam_email
-      ],
+      [module.automation-tf-bootstrap-sa.iam_email],[module.automation-tf-resman-sa.iam_email],
       local._iam_bootstrap_user
     )
+    "roles/iam.serviceAccountTokenCreator" = concat(
+      [module.automation-tf-bootstrap-sa.iam_email],[module.automation-tf-resman-sa.iam_email],
+      local._iam_bootstrap_user
+    )
+    "roles/billing.admin" = [
+      module.automation-tf-resman-sa.iam_email
+    ]
+
     "roles/resourcemanager.projectMover" = [
       module.automation-tf-bootstrap-sa.iam_email
     ]
+    
+
     "roles/resourcemanager.tagAdmin" = [
       module.automation-tf-resman-sa.iam_email
     ]
@@ -80,6 +87,13 @@ locals {
         local.groups_iam.gcp-security-admins,
         module.automation-tf-resman-sa.iam_email
       ]
+      /*"roles/iam.serviceAccountTokenCreator" =[
+        module.automation-tf-bootstrap-sa.iam_email,
+        module.automation-tf-resman-sa.iam_email,
+        local._iam_bootstrap_user
+      ]*/
+    
+    
       # the following is useful if roles/browser is not desirable
       # "roles/resourcemanager.organizationViewer" = [
       #   "domain:${var.organization.domain}"
@@ -220,6 +234,7 @@ resource "google_organization_iam_binding" "org_admin_delegated" {
           "roles/compute.xpnAdmin",
           "roles/orgpolicy.policyAdmin",
           "roles/resourcemanager.organizationViewer",
+          "roles/iam.serviceAccountTokenCreator",
           module.organization.custom_role_id[var.custom_role_names.tenant_network_admin]
         ],
         var.billing_account.is_org_level ? [

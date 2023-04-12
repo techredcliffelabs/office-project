@@ -55,8 +55,7 @@ module "branch-security-sa" {
   display_name = "Terraform resman security service account."
   prefix       = var.prefix
   iam = {
-    "roles/iam.serviceAccountTokenCreator" = compact([
-      try(module.branch-security-sa-cicd.0.iam_email, null)
+    "roles/iam.serviceAccountTokenCreator" = compact([module.branch-security-sa.iam_email
     ])
   }
   iam_storage_roles = {

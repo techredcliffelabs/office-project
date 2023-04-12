@@ -1,7 +1,7 @@
 module "prod-project" {
   source          = "../../../modules/project"
   billing_account = var.billing_account.id
-  name            = "prod-project"
+  name            = "prod-project1"
   parent          = var.folder_ids.prod
   prefix          = var.prefix
   services = [
@@ -26,6 +26,18 @@ resource "google_compute_shared_vpc_service_project" "service-prod" {
   host_project    = module.host-project.project_id
   service_project = module.prod-project.project_id
   #network         = module.dev-vpc.self_link
+}
+
+resource "google_project_organization_policy" "prod-org-policy" {
+  #for_each = module.dev-vpc.subnet_id
+  project    = module.prod-project.project_id
+  constraint = "constraints/compute.restrictSharedVpcSubnetworks"
+
+  list_policy {
+    allow {
+      values = tolist(values(module.prod-vpc.subnet_id))
+    }
+  }
 }
 
 

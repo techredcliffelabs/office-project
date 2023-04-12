@@ -55,15 +55,31 @@ module "branch-network-sa" {
   display_name = "Terraform resman networking service account."
   prefix       = var.prefix
   iam = {
-    "roles/iam.serviceAccountTokenCreator" = compact([
-      try(module.branch-network-sa-cicd.0.iam_email, null)
-    ])
+    "roles/iam.serviceAccountTokenCreator" = compact([module.branch-network-sa.iam_email])
   }
   iam_storage_roles = {
     (var.automation.outputs_bucket) = ["roles/storage.admin"]
   }
 }
 
+
+/*resource "google_project_iam_binding" "log-binding" {
+  project = var.automation.audit-log-project_id
+  role    = "roles/logging.admin"
+
+  members = [
+    "${module.branch-network-sa.iam_email}",
+  ]
+}
+
+resource "google_project_iam_binding" "iam-policy-binding" {
+  project = var.automation.audit-log-project_id
+  role    = "roles/resourcemanager.projectIamAdmin"
+
+  members = [
+    "${module.branch-network-sa.iam_email}",
+  ]
+}*/
 
 module "branch-network-gcs" {
   source        = "../../../modules/gcs"

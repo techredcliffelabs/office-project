@@ -19,8 +19,8 @@
 module "host-project" {
   source          = "../../../modules/project"
   billing_account = var.billing_account.id
-  name            = "vpc-host"
-  parent          = var.folder_ids.networking
+  name            = "vpc-host1"
+  parent          = var.folder_ids.shared-resources
   prefix          = var.prefix
   services = [
     "compute.googleapis.com",
@@ -121,6 +121,7 @@ module "dev-vpc" {
     }
   }
   data_folder = "${var.factories_config.data_dir}/subnets/dev"
+  #ip-list = local.subnets
 }
 
 module "qa-vpc" {
@@ -187,6 +188,26 @@ module "prod-vpc" {
 moved {
   from = module.landing-nat-ew1
   to   = module.landing-nat-primary
+}*/
+
+
+
+
+
+
+
+/*
+module "dev-firewall-rule" {
+  source     = "../../../modules/net-vpc-firewall"
+  project_id = module.host-project.project_id
+  network    = module.dev-vpc.name
+  default_rules_config = {
+    disabled = true
+  }
+  factories_config = {
+    cidr_tpl_file = "${var.factories_config.data_dir}/cidrs.yaml"
+    rules_folder  = "${var.factories_config.data_dir}/firewall-rules/dev"
+  }
 }*/
 
 module "transit-nat-primary" {

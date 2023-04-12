@@ -24,6 +24,8 @@ variable "automation" {
     outputs_bucket          = string
     project_id              = string
     project_number          = string
+    audit-log-bucket        = string
+    audit-log-project_id    = string
     federated_identity_pool = string
     federated_identity_providers = map(object({
       issuer           = string
@@ -31,6 +33,7 @@ variable "automation" {
       name             = string
       principal_tpl    = string
       principalset_tpl = string
+      
     }))
   })
 }

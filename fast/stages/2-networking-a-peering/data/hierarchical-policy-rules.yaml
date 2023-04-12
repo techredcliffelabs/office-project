@@ -47,3 +47,53 @@ allow-icmp:
     icmp: []
   target_resources: null
   enable_logging: false
+
+deny-all-egress:
+  description: DENY ALL EGRESS
+  direction: EGRESS
+  action: deny
+  priority: 999
+  ranges:
+    - 0.0.0.0/0
+  ports:
+    all: []
+    #icmp: []
+  target_resources: null
+  enable_logging: false
+
+allow-ssh-from-iap-egress:
+  description: Enable SSH from IAP
+  direction: EGRESS
+  action: allow
+  priority: 997
+  ranges:
+    - 35.235.240.0/20
+  ports:
+    tcp: ["22"]
+  target_resources: null
+  enable_logging: false
+
+allow-healthchecks-egress:
+  description: Enable HTTP and HTTPS healthchecks
+  direction: EGRESS
+  action: allow
+  priority: 996
+  ranges:
+    - $healthchecks
+  ports:
+    tcp: ["80", "443"]
+  target_resources: null
+  enable_logging: false
+
+
+allow-admins-egress:
+  description: Access from the admin subnet to all subnets
+  direction: EGRESS
+  action: allow
+  priority: 995
+  ranges:
+    - $rfc1918
+  ports:
+    all: []
+  target_resources: null
+  enable_logging: false

@@ -74,6 +74,12 @@ output "subnet_ips" {
     for k, v in google_compute_subnetwork.subnetwork : k => v.ip_cidr_range
   }
 }
+output "subnet_id" {
+  description = "Map of subnet address ranges keyed by name."
+  value = {
+    for k, v in google_compute_subnetwork.subnetwork : k => v.id
+  }
+}
 
 output "subnet_regions" {
   description = "Map of subnet regions keyed by name."

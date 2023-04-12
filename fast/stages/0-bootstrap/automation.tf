@@ -118,15 +118,22 @@ module "automation-tf-bootstrap-sa" {
   prefix       = local.prefix
   # allow SA used by CI/CD workflow to impersonate this SA
   iam = {
-    "roles/iam.serviceAccountTokenCreator" = compact([
-      try(module.automation-tf-cicd-sa["bootstrap"].iam_email, null)
-    ])
+    "roles/iam.serviceAccountTokenCreator" = [module.automation-tf-bootstrap-sa.iam_email]
   }
   iam_storage_roles = {
     (module.automation-tf-output-gcs.name) = ["roles/storage.admin"]
   }
+
 }
 
+resource "google_service_account_iam_binding" "admin-account-iam" {
+  service_account_id = module.automation-tf-bootstrap-sa.id
+  role               = "roles/iam.serviceAccountTokenCreator"
+
+  members = [
+    "${module.automation-tf-bootstrap-sa.iam_email}",
+  ]
+}
 # resource hierarchy stage's bucket and service account
 
 module "automation-tf-resman-gcs" {
@@ -152,11 +159,18 @@ module "automation-tf-resman-sa" {
   # allow SA used by CI/CD workflow to impersonate this SA
   # we use additive IAM to allow tenant CI/CD SAs to impersonate it
   iam_additive = {
-    "roles/iam.serviceAccountTokenCreator" = compact([
-      try(module.automation-tf-cicd-sa["resman"].iam_email, null)
-    ])
+    "roles/iam.serviceAccountTokenCreator" = [module.automation-tf-resman-sa.iam_email]
   }
   iam_storage_roles = {
     (module.automation-tf-output-gcs.name) = ["roles/storage.admin"]
   }
+}
+
+resource "google_service_account_iam_binding" "resman-role" {
+  service_account_id = module.automation-tf-resman-sa.name
+  role               = "roles/iam.serviceAccountTokenCreator"
+
+  members = [
+    "${module.automation-tf-resman-sa.iam_email}",
+  ]
 }

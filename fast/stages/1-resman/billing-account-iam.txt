@@ -1,0 +1,8 @@
+resource "google_billing_account_iam_binding" "editor" {
+  billing_account_id = var.billing_account.id
+  role               = "roles/billing.user"
+  members = [
+    "${module.branch-network-sa.iam_email}",
+    "${module.branch-security-sa.iam_email}"
+  ]
+}

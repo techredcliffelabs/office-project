@@ -76,12 +76,13 @@ locals {
       data-platform-prod = try(module.branch-dp-prod-folder.0.id, null)
       gke-dev            = try(module.branch-gke-dev-folder.0.id, null)
       gke-prod           = try(module.branch-gke-prod-folder.0.id, null)
-      networking         = try(module.branch-network-folder.id, null)
+      shared-resources   = try(module.branch-network-folder.id, null)
       #networking-dev     = try(module.branch-network-dev-folder.id, null)
       #networking-prod    = try(module.branch-network-prod-folder.id, null)
       sandbox            = try(module.branch-sandbox-folder.0.id, null)
       security           = try(module.branch-security-folder.id, null)
-      #non-prod              = try(module.branch-non-prod-folder.0.id, null)
+      non-prod           = module.branch-non-prod-folder.id
+      prod               = module.branch-prod-folder.id
     },
   )
   providers = merge(

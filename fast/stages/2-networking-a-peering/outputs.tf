@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+/*
 locals {
   host_project_ids = {
     #dev-spoke-0  = module.dev-spoke-project.project_id
@@ -59,7 +59,8 @@ resource "google_storage_bucket_object" "tfvars" {
 }
 
 # outputs
-
+*/
+/*
 output "cloud_dns_inbound_policy" {
   description = "IP Addresses for Cloud DNS inbound policy."
   value       = [for s in module.landing-vpc.subnets : cidrhost(s.ip_cidr_range, 2)]
@@ -94,4 +95,20 @@ output "vpn_gateway_endpoints" {
       v.id => v.ip_address
     }
   }
+}*/
+
+
+output "ip" {
+  description = "Terraform variables file for the following stages."
+  value       = module.dev-vpc.subnet_ips
+}
+
+output "id" {
+  description = "Terraform variables file for the following stages."
+  value       = module.dev-vpc.subnet_id
+}
+
+output "self-link" {
+  description = "Terraform variables file for the following stages."
+  value       = module.dev-vpc.subnet_self_links
 }

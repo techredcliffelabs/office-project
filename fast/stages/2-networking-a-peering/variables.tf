@@ -19,6 +19,10 @@ variable "automation" {
   description = "Automation resources created by the bootstrap stage."
   type = object({
     outputs_bucket = string
+    audit-log-project_id  = string
+    dev-log-bucket        = string
+    qa-log-bucket         = string
+    prod-log-bucket       = string
   })
 }
 
@@ -93,13 +97,25 @@ variable "folder_ids" {
   # tfdoc:variable:source 1-resman
   description = "Folders to be used for the networking resources in folders/nnnnnnnnnnn format. If null, folder will be created."
   type = object({
-    networking      = string
-    networking-dev  = string
-    networking-prod = string
+    shared-resources = string
+    #networking-dev  = string
+    #networking-prod = string
     non-prod = string
     prod = string
   })
 }
+
+/*
+variable "sink" {
+  # tfdoc:variable:source 1-resman
+  description = "values from 0-bootstrap.tfvars file in outputs bucket"
+  type = object({
+    audit-log-project_id  = string
+    dev-log-bucket        = string
+    qa-log-bucket         = string
+    prod-log-bucket       = string
+  })
+}*/
 
 variable "l7ilb_subnets" {
   description = "Subnets used for L7 ILBs."

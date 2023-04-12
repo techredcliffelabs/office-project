@@ -39,7 +39,7 @@ module "branch-prod-folder" {
 
 # automation service account and bucket
 
-module "branch-prod-gcs" {
+/*module "branch-prod-gcs" {
   source        = "../../../modules/gcs"
   project_id    = var.automation.project_id
   name          = "prod-env"
@@ -50,4 +50,21 @@ module "branch-prod-gcs" {
   iam = {
     "roles/storage.objectAdmin" = [module.branch-network-sa.iam_email]
   }
+}*/
+
+resource "google_logging_folder_sink" "folder-sink-audit-log" {
+  name   = "data-access-sink"
+  description = "some explanation on what this is"
+  folder = module.branch-prod-folder.id
+  include_children = true
+  # Can export to pubsub, cloud storage, or bigquery
+  destination = "logging.googleapis.com/${var.automation.audit-log-bucket}"
+  # Log all WARN or higher severity messages relating to instances
+  filter = "folders/${module.branch-prod-folder.id}/logs/cloudaudit.googleapis.com%2Fdata_access"
+}
+
+resource "google_project_iam_member" "log-writer" {
+  project = var.automation.audit-log-project_id
+  role    = "roles/logging.bucketWriter"
+  member  = google_logging_folder_sink.folder-sink-audit-log.writer_identity
 }

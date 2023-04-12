@@ -25,7 +25,9 @@ locals {
     # use separate pubsub topics and logging buckets for sinks with
     # destination `pubsub` and `logging`
     module.log-export-pubsub,
-    module.log-export-logbucket
+    #module.log-export-logbucket-dev,
+    #module.log-export-logbucket-qa,
+    module.log-export-logbucket-audit-logs
   )
   log_types = toset([for k, v in var.log_sinks : v.type])
 }
@@ -72,16 +74,34 @@ module "log-export-gcs" {
   storage_class = local.gcs_storage_class
 }
 
-module "log-export-logbucket" {
+module "log-export-logbucket-audit-logs" {
   source      = "../../../modules/logging-bucket"
   #for_each    = toset([for k, v in var.log_sinks : k if v.type == "logging"])
   parent_type = "project"
   parent      = module.log-export-project.project_id
-  id          = "audit-logs-prod"
+  id          = "org-audit-logs"
   location    = var.locations.logging
 }
 
-module "log-export-logbucket1" {
+resource "google_logging_organization_sink" "my-org-sink" {
+  name   = "my-org-sink"
+  description = "some explanation on what this is"
+  org_id = var.organization.id
+
+  # Can export to pubsub, cloud storage, or bigquery
+  destination = "logging.googleapis.com/${module.log-export-logbucket-audit-logs.id}"
+
+  # Log all WARN or higher severity messages relating to instances
+  filter = "logs/cloudaudit.googleapis.com%2Factivity OR logs/cloudaudit.googleapis.com%2Fsystem_event OR logs/cloudaudit.googleapis.com%2Fpolicy"
+  include_children = true
+}
+
+resource "google_project_iam_member" "log-writer" {
+  project = module.log-export-project.project_id
+  role    = "roles/logging.bucketWriter"
+  member  = google_logging_organization_sink.my-org-sink.writer_identity
+}
+/*module "log-export-logbucket-dev" {
   source      = "../../../modules/logging-bucket"
   #for_each    = toset([for k, v in var.log_sinks : k if v.type == "logging"])
   parent_type = "project"
@@ -90,14 +110,14 @@ module "log-export-logbucket1" {
   location    = var.locations.logging
 }
 
-module "log-export-logbucket2" {
+module "log-export-logbucket-qa" {
   source      = "../../../modules/logging-bucket"
   #for_each    = toset([for k, v in var.log_sinks : k if v.type == "logging"])
   parent_type = "project"
   parent      = module.log-export-project.project_id
   id          = "audit-logs_non-prod-qa"
   location    = var.locations.logging
-}
+}*/
 
 module "log-export-pubsub" {
   source     = "../../../modules/pubsub"

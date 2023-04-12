@@ -1,0 +1,1852 @@
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # google_compute_shared_vpc_service_project.service-dev will be created
+  + resource "google_compute_shared_vpc_service_project" "service-dev" {
+      + host_project    = "arch1-vpc-host"
+      + id              = (known after apply)
+      + service_project = "arch1-dev-project-1"
+    }
+
+  # google_compute_shared_vpc_service_project.service-prod will be created
+  + resource "google_compute_shared_vpc_service_project" "service-prod" {
+      + host_project    = "arch1-vpc-host"
+      + id              = (known after apply)
+      + service_project = "arch1-prod-project"
+    }
+
+  # google_compute_shared_vpc_service_project.service-qa will be created
+  + resource "google_compute_shared_vpc_service_project" "service-qa" {
+      + host_project    = "arch1-vpc-host"
+      + id              = (known after apply)
+      + service_project = "arch1-qa-project"
+    }
+
+  # google_logging_project_sink.my-dev-sink will be created
+  + resource "google_logging_project_sink" "my-dev-sink" {
+      + destination            = "logging.googleapis.com/projects/arch1-prod-audit-logs-0/locations/us-central1/buckets/audit-logs_non-prod-dev"
+      + filter                 = "projects/arch1-dev-project-1/logs/cloudaudit.googleapis.com%2Factivity OR projects/arch1-dev-project-1/logs/cloudaudit.googleapis.com%2Fsystem_event OR projects/arch1-dev-project-1/logs/cloudaudit.googleapis.com%2Fdata_access"
+      + id                     = (known after apply)
+      + name                   = "dev_default-non-prod_audit_logs"
+      + project                = "arch1-dev-project-1"
+      + unique_writer_identity = true
+      + writer_identity        = (known after apply)
+
+      + bigquery_options {
+          + use_partitioned_tables = (known after apply)
+        }
+    }
+
+  # google_logging_project_sink.my-qa-sink will be created
+  + resource "google_logging_project_sink" "my-qa-sink" {
+      + destination            = "logging.googleapis.com/projects/arch1-prod-audit-logs-0/locations/us-central1/buckets/audit-logs_non-prod-qa"
+      + filter                 = "projects/arch1-qa-project/logs/cloudaudit.googleapis.com%2Factivity OR projects/arch1-qa-project/logs/cloudaudit.googleapis.com%2Fsystem_event OR projects/arch1-qa-project/logs/cloudaudit.googleapis.com%2Fdata_access"
+      + id                     = (known after apply)
+      + name                   = "qa_default-non-prod_audit_logs"
+      + project                = "arch1-qa-project"
+      + unique_writer_identity = true
+      + writer_identity        = (known after apply)
+
+      + bigquery_options {
+          + use_partitioned_tables = (known after apply)
+        }
+    }
+
+  # google_logging_project_sink.my-sink will be created
+  + resource "google_logging_project_sink" "my-sink" {
+      + destination            = "logging.googleapis.com/projects/arch1-prod-audit-logs-0/locations/us-central1/buckets/audit-logs-prod"
+      + filter                 = "projects/arch1-prod-project/logs/cloudaudit.googleapis.com%2Factivity OR projects/arch1-prod-project/logs/cloudaudit.googleapis.com%2Fsystem_event OR projects/arch1-prod-project/logs/cloudaudit.googleapis.com%2Fdata_access OR projects/arch1-prod-project/logs/cloudaudit.googleapis.com%2Fpolicy"
+      + id                     = (known after apply)
+      + name                   = "prod_default-prod_audit_logs"
+      + project                = "arch1-prod-project"
+      + unique_writer_identity = true
+      + writer_identity        = (known after apply)
+
+      + bigquery_options {
+          + use_partitioned_tables = (known after apply)
+        }
+    }
+
+  # google_project_iam_binding.log-writer will be created
+  + resource "google_project_iam_binding" "log-writer" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = (known after apply)
+      + project = "arch1-prod-audit-logs-0"
+      + role    = "roles/logging.bucketWriter"
+    }
+
+  # google_project_iam_binding.qa-log-writer will be created
+  + resource "google_project_iam_binding" "qa-log-writer" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + members = (known after apply)
+      + project = "arch1-prod-audit-logs-0"
+      + role    = "roles/logging.bucketWriter"
+    }
+
+  # module.dev-nat-primary.google_compute_router.router[0] will be created
+  + resource "google_compute_router" "router" {
+      + creation_timestamp = (known after apply)
+      + id                 = (known after apply)
+      + name               = "dev-nat-uc1"
+      + network            = (known after apply)
+      + project            = "arch1-vpc-host"
+      + region             = "us-central1"
+      + self_link          = (known after apply)
+
+      + bgp {
+          + advertise_mode     = "DEFAULT"
+          + asn                = 4200001024
+          + keepalive_interval = 20
+        }
+    }
+
+  # module.dev-nat-primary.google_compute_router_nat.nat will be created
+  + resource "google_compute_router_nat" "nat" {
+      + enable_dynamic_port_allocation      = (known after apply)
+      + enable_endpoint_independent_mapping = true
+      + icmp_idle_timeout_sec               = 30
+      + id                                  = (known after apply)
+      + min_ports_per_vm                    = 64
+      + name                                = "dev-nat"
+      + nat_ip_allocate_option              = "AUTO_ONLY"
+      + project                             = "arch1-vpc-host"
+      + region                              = "us-central1"
+      + router                              = "dev-nat-uc1"
+      + source_subnetwork_ip_ranges_to_nat  = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+      + tcp_established_idle_timeout_sec    = 1200
+      + tcp_time_wait_timeout_sec           = 120
+      + tcp_transitory_idle_timeout_sec     = 30
+      + udp_idle_timeout_sec                = 30
+
+      + log_config {
+          + enable = false
+          + filter = "ALL"
+        }
+    }
+
+  # module.dev-nat-secondary.google_compute_router.router[0] will be created
+  + resource "google_compute_router" "router" {
+      + creation_timestamp = (known after apply)
+      + id                 = (known after apply)
+      + name               = "dev-dr-nat-uc1"
+      + network            = (known after apply)
+      + project            = "arch1-vpc-host"
+      + region             = "europe-west2"
+      + self_link          = (known after apply)
+
+      + bgp {
+          + advertise_mode     = "DEFAULT"
+          + asn                = 4200001024
+          + keepalive_interval = 20
+        }
+    }
+
+  # module.dev-nat-secondary.google_compute_router_nat.nat will be created
+  + resource "google_compute_router_nat" "nat" {
+      + enable_dynamic_port_allocation      = (known after apply)
+      + enable_endpoint_independent_mapping = true
+      + icmp_idle_timeout_sec               = 30
+      + id                                  = (known after apply)
+      + min_ports_per_vm                    = 64
+      + name                                = "dev-dr-nat"
+      + nat_ip_allocate_option              = "AUTO_ONLY"
+      + project                             = "arch1-vpc-host"
+      + region                              = "europe-west2"
+      + router                              = "dev-dr-nat-uc1"
+      + source_subnetwork_ip_ranges_to_nat  = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+      + tcp_established_idle_timeout_sec    = 1200
+      + tcp_time_wait_timeout_sec           = 120
+      + tcp_transitory_idle_timeout_sec     = 30
+      + udp_idle_timeout_sec                = 30
+
+      + log_config {
+          + enable = false
+          + filter = "ALL"
+        }
+    }
+
+  # module.dev-project.google_project.project[0] will be created
+  + resource "google_project" "project" {
+      + auto_create_network = false
+      + billing_account     = "013816-12836E-7ECD57"
+      + folder_id           = "248875342427"
+      + id                  = (known after apply)
+      + name                = "arch1-dev-project-1"
+      + number              = (known after apply)
+      + project_id          = "arch1-dev-project-1"
+      + skip_delete         = false
+    }
+
+  # module.dev-project.google_project_iam_binding.authoritative["organizations/119369546298/roles/serviceProjectNetworkAdmin"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + project = "arch1-dev-project-1"
+      + role    = "organizations/119369546298/roles/serviceProjectNetworkAdmin"
+    }
+
+  # module.dev-project.google_project_iam_binding.authoritative["roles/dns.admin"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + project = "arch1-dev-project-1"
+      + role    = "roles/dns.admin"
+    }
+
+  # module.dev-project.google_project_service.project_services["compute.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-dev-project-1"
+      + service                    = "compute.googleapis.com"
+    }
+
+  # module.dev-project.google_project_service.project_services["dns.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-dev-project-1"
+      + service                    = "dns.googleapis.com"
+    }
+
+  # module.dev-project.google_project_service.project_services["iap.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-dev-project-1"
+      + service                    = "iap.googleapis.com"
+    }
+
+  # module.dev-project.google_project_service.project_services["networkmanagement.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-dev-project-1"
+      + service                    = "networkmanagement.googleapis.com"
+    }
+
+  # module.dev-project.google_project_service.project_services["stackdriver.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-dev-project-1"
+      + service                    = "stackdriver.googleapis.com"
+    }
+
+  # module.dev-vpc.google_compute_network.network[0] will be created
+  + resource "google_compute_network" "network" {
+      + auto_create_subnetworks                   = false
+      + delete_default_routes_on_create           = false
+      + description                               = "Terraform-managed."
+      + gateway_ipv4                              = (known after apply)
+      + id                                        = (known after apply)
+      + internal_ipv6_range                       = (known after apply)
+      + mtu                                       = 1500
+      + name                                      = "dev-vpc"
+      + network_firewall_policy_enforcement_order = "AFTER_CLASSIC_FIREWALL"
+      + project                                   = "arch1-vpc-host"
+      + routing_mode                              = "GLOBAL"
+      + self_link                                 = (known after apply)
+    }
+
+  # module.dev-vpc.google_compute_route.gateway["private-googleapis"] will be created
+  + resource "google_compute_route" "gateway" {
+      + description            = "Terraform-managed."
+      + dest_range             = "199.36.153.8/30"
+      + id                     = (known after apply)
+      + name                   = "dev-vpc-private-googleapis"
+      + network                = (known after apply)
+      + next_hop_gateway       = "default-internet-gateway"
+      + next_hop_instance_zone = (known after apply)
+      + next_hop_ip            = (known after apply)
+      + next_hop_network       = (known after apply)
+      + priority               = 1000
+      + project                = "arch1-vpc-host"
+      + self_link              = (known after apply)
+    }
+
+  # module.dev-vpc.google_compute_route.gateway["restricted-googleapis"] will be created
+  + resource "google_compute_route" "gateway" {
+      + description            = "Terraform-managed."
+      + dest_range             = "199.36.153.4/30"
+      + id                     = (known after apply)
+      + name                   = "dev-vpc-restricted-googleapis"
+      + network                = (known after apply)
+      + next_hop_gateway       = "default-internet-gateway"
+      + next_hop_instance_zone = (known after apply)
+      + next_hop_ip            = (known after apply)
+      + next_hop_network       = (known after apply)
+      + priority               = 1000
+      + project                = "arch1-vpc-host"
+      + self_link              = (known after apply)
+    }
+
+  # module.dev-vpc.google_compute_subnetwork.subnetwork["europe-west2/dev-europe-west2"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "Default subnet for dev vpc in europe region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.154.2.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "dev-europe-west2"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "europe-west2"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.dev-vpc.google_compute_subnetwork.subnetwork["europe-west2/dev-europe-west2-dr"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "DR subnet for dev vpc in europe region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.154.3.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "dev-europe-west2-dr"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "europe-west2"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.dev-vpc.google_compute_subnetwork.subnetwork["us-central1/dev-us-central"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "Default subnet for dev vpc in us region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.154.0.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "dev-us-central"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "us-central1"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.dev-vpc.google_compute_subnetwork.subnetwork["us-central1/dev-us-central-dr"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "DR subnet for dev vpc in us region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.154.1.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "dev-us-central-dr"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "us-central1"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.dev-vpc.google_dns_policy.default[0] will be created
+  + resource "google_dns_policy" "default" {
+      + description               = "Managed by Terraform"
+      + enable_inbound_forwarding = true
+      + id                        = (known after apply)
+      + name                      = "dev-vpc"
+      + project                   = "arch1-vpc-host"
+
+      + networks {
+          + network_url = (known after apply)
+        }
+    }
+
+  # module.folder.google_compute_firewall_policy.policy["factory"] will be created
+  + resource "google_compute_firewall_policy" "policy" {
+      + creation_timestamp = (known after apply)
+      + fingerprint        = (known after apply)
+      + firewall_policy_id = (known after apply)
+      + id                 = (known after apply)
+      + name               = (known after apply)
+      + parent             = "folders/90871622711"
+      + rule_tuple_count   = (known after apply)
+      + self_link          = (known after apply)
+      + self_link_with_id  = (known after apply)
+      + short_name         = "factory"
+    }
+
+  # module.folder.google_compute_firewall_policy_association.association["factory-policy"] will be created
+  + resource "google_compute_firewall_policy_association" "association" {
+      + attachment_target = "folders/90871622711"
+      + firewall_policy   = (known after apply)
+      + id                = (known after apply)
+      + name              = "folders-90871622711"
+      + short_name        = (known after apply)
+    }
+
+  # module.folder.google_compute_firewall_policy_rule.rule["factory-allow-admins"] will be created
+  + resource "google_compute_firewall_policy_rule" "rule" {
+      + action           = "allow"
+      + description      = "Access from the admin subnet to all subnets"
+      + direction        = "INGRESS"
+      + firewall_policy  = (known after apply)
+      + id               = (known after apply)
+      + kind             = (known after apply)
+      + priority         = 1000
+      + rule_tuple_count = (known after apply)
+
+      + match {
+          + src_ip_ranges = [
+              + "10.0.0.0/8",
+              + "172.16.0.0/12",
+              + "192.168.0.0/16",
+            ]
+
+          + layer4_configs {
+              + ip_protocol = "all"
+              + ports       = []
+            }
+        }
+    }
+
+  # module.folder.google_compute_firewall_policy_rule.rule["factory-allow-healthchecks"] will be created
+  + resource "google_compute_firewall_policy_rule" "rule" {
+      + action           = "allow"
+      + description      = "Enable HTTP and HTTPS healthchecks"
+      + direction        = "INGRESS"
+      + firewall_policy  = (known after apply)
+      + id               = (known after apply)
+      + kind             = (known after apply)
+      + priority         = 1001
+      + rule_tuple_count = (known after apply)
+
+      + match {
+          + src_ip_ranges = [
+              + "35.191.0.0/16",
+              + "130.211.0.0/22",
+              + "209.85.152.0/22",
+              + "209.85.204.0/22",
+            ]
+
+          + layer4_configs {
+              + ip_protocol = "tcp"
+              + ports       = [
+                  + "80",
+                  + "443",
+                ]
+            }
+        }
+    }
+
+  # module.folder.google_compute_firewall_policy_rule.rule["factory-allow-icmp"] will be created
+  + resource "google_compute_firewall_policy_rule" "rule" {
+      + action           = "allow"
+      + description      = "Enable ICMP"
+      + direction        = "INGRESS"
+      + firewall_policy  = (known after apply)
+      + id               = (known after apply)
+      + kind             = (known after apply)
+      + priority         = 1003
+      + rule_tuple_count = (known after apply)
+
+      + match {
+          + src_ip_ranges = [
+              + "0.0.0.0/0",
+            ]
+
+          + layer4_configs {
+              + ip_protocol = "icmp"
+              + ports       = []
+            }
+        }
+    }
+
+  # module.folder.google_compute_firewall_policy_rule.rule["factory-allow-ssh-from-iap"] will be created
+  + resource "google_compute_firewall_policy_rule" "rule" {
+      + action           = "allow"
+      + description      = "Enable SSH from IAP"
+      + direction        = "INGRESS"
+      + firewall_policy  = (known after apply)
+      + id               = (known after apply)
+      + kind             = (known after apply)
+      + priority         = 1002
+      + rule_tuple_count = (known after apply)
+
+      + match {
+          + src_ip_ranges = [
+              + "35.235.240.0/20",
+            ]
+
+          + layer4_configs {
+              + ip_protocol = "tcp"
+              + ports       = [
+                  + "22",
+                ]
+            }
+        }
+    }
+
+  # module.host-project.google_compute_shared_vpc_host_project.shared_vpc_host[0] will be created
+  + resource "google_compute_shared_vpc_host_project" "shared_vpc_host" {
+      + id      = (known after apply)
+      + project = "arch1-vpc-host"
+    }
+
+  # module.host-project.google_project.project[0] will be created
+  + resource "google_project" "project" {
+      + auto_create_network = false
+      + billing_account     = "013816-12836E-7ECD57"
+      + folder_id           = "90871622711"
+      + id                  = (known after apply)
+      + name                = "arch1-vpc-host"
+      + number              = (known after apply)
+      + project_id          = "arch1-vpc-host"
+      + skip_delete         = false
+    }
+
+  # module.host-project.google_project_iam_binding.authoritative["organizations/119369546298/roles/serviceProjectNetworkAdmin"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + project = "arch1-vpc-host"
+      + role    = "organizations/119369546298/roles/serviceProjectNetworkAdmin"
+    }
+
+  # module.host-project.google_project_iam_binding.authoritative["roles/dns.admin"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + project = "arch1-vpc-host"
+      + role    = "roles/dns.admin"
+    }
+
+  # module.host-project.google_project_service.project_services["compute.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + service                    = "compute.googleapis.com"
+    }
+
+  # module.host-project.google_project_service.project_services["dns.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + service                    = "dns.googleapis.com"
+    }
+
+  # module.host-project.google_project_service.project_services["iap.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + service                    = "iap.googleapis.com"
+    }
+
+  # module.host-project.google_project_service.project_services["networkmanagement.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + service                    = "networkmanagement.googleapis.com"
+    }
+
+  # module.host-project.google_project_service.project_services["stackdriver.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + service                    = "stackdriver.googleapis.com"
+    }
+
+  # module.peering-shared-resources-dev.google_compute_network_peering.local_network_peering will be created
+  + resource "google_compute_network_peering" "local_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.peering-shared-resources-dev.google_compute_network_peering.peer_network_peering[0] will be created
+  + resource "google_compute_network_peering" "peer_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.peering-shared-resources-prod.google_compute_network_peering.local_network_peering will be created
+  + resource "google_compute_network_peering" "local_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.peering-shared-resources-prod.google_compute_network_peering.peer_network_peering[0] will be created
+  + resource "google_compute_network_peering" "peer_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.peering-shared-resources-qa.google_compute_network_peering.local_network_peering will be created
+  + resource "google_compute_network_peering" "local_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.peering-shared-resources-qa.google_compute_network_peering.peer_network_peering[0] will be created
+  + resource "google_compute_network_peering" "peer_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.peering-transit-dev.google_compute_network_peering.local_network_peering will be created
+  + resource "google_compute_network_peering" "local_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.peering-transit-dev.google_compute_network_peering.peer_network_peering[0] will be created
+  + resource "google_compute_network_peering" "peer_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.peering-transit-prod.google_compute_network_peering.local_network_peering will be created
+  + resource "google_compute_network_peering" "local_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.peering-transit-prod.google_compute_network_peering.peer_network_peering[0] will be created
+  + resource "google_compute_network_peering" "peer_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.peering-transit-qa.google_compute_network_peering.local_network_peering will be created
+  + resource "google_compute_network_peering" "local_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.peering-transit-qa.google_compute_network_peering.peer_network_peering[0] will be created
+  + resource "google_compute_network_peering" "peer_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.peering-transit-shared.google_compute_network_peering.local_network_peering will be created
+  + resource "google_compute_network_peering" "local_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.peering-transit-shared.google_compute_network_peering.peer_network_peering[0] will be created
+  + resource "google_compute_network_peering" "peer_network_peering" {
+      + export_custom_routes                = true
+      + export_subnet_routes_with_public_ip = true
+      + id                                  = (known after apply)
+      + import_custom_routes                = true
+      + name                                = (known after apply)
+      + network                             = (known after apply)
+      + peer_network                        = (known after apply)
+      + state                               = (known after apply)
+      + state_details                       = (known after apply)
+    }
+
+  # module.prod-nat-primary.google_compute_router.router[0] will be created
+  + resource "google_compute_router" "router" {
+      + creation_timestamp = (known after apply)
+      + id                 = (known after apply)
+      + name               = "prod1-nat-uc1"
+      + network            = (known after apply)
+      + project            = "arch1-vpc-host"
+      + region             = "us-central1"
+      + self_link          = (known after apply)
+
+      + bgp {
+          + advertise_mode     = "DEFAULT"
+          + asn                = 4200001024
+          + keepalive_interval = 20
+        }
+    }
+
+  # module.prod-nat-primary.google_compute_router_nat.nat will be created
+  + resource "google_compute_router_nat" "nat" {
+      + enable_dynamic_port_allocation      = (known after apply)
+      + enable_endpoint_independent_mapping = true
+      + icmp_idle_timeout_sec               = 30
+      + id                                  = (known after apply)
+      + min_ports_per_vm                    = 64
+      + name                                = "prod1-nat"
+      + nat_ip_allocate_option              = "AUTO_ONLY"
+      + project                             = "arch1-vpc-host"
+      + region                              = "us-central1"
+      + router                              = "prod1-nat-uc1"
+      + source_subnetwork_ip_ranges_to_nat  = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+      + tcp_established_idle_timeout_sec    = 1200
+      + tcp_time_wait_timeout_sec           = 120
+      + tcp_transitory_idle_timeout_sec     = 30
+      + udp_idle_timeout_sec                = 30
+
+      + log_config {
+          + enable = false
+          + filter = "ALL"
+        }
+    }
+
+  # module.prod-nat-secondary.google_compute_router.router[0] will be created
+  + resource "google_compute_router" "router" {
+      + creation_timestamp = (known after apply)
+      + id                 = (known after apply)
+      + name               = "prod1-dr-nat-uc1"
+      + network            = (known after apply)
+      + project            = "arch1-vpc-host"
+      + region             = "europe-west2"
+      + self_link          = (known after apply)
+
+      + bgp {
+          + advertise_mode     = "DEFAULT"
+          + asn                = 4200001024
+          + keepalive_interval = 20
+        }
+    }
+
+  # module.prod-nat-secondary.google_compute_router_nat.nat will be created
+  + resource "google_compute_router_nat" "nat" {
+      + enable_dynamic_port_allocation      = (known after apply)
+      + enable_endpoint_independent_mapping = true
+      + icmp_idle_timeout_sec               = 30
+      + id                                  = (known after apply)
+      + min_ports_per_vm                    = 64
+      + name                                = "prod1-dr-nat"
+      + nat_ip_allocate_option              = "AUTO_ONLY"
+      + project                             = "arch1-vpc-host"
+      + region                              = "europe-west2"
+      + router                              = "prod1-dr-nat-uc1"
+      + source_subnetwork_ip_ranges_to_nat  = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+      + tcp_established_idle_timeout_sec    = 1200
+      + tcp_time_wait_timeout_sec           = 120
+      + tcp_transitory_idle_timeout_sec     = 30
+      + udp_idle_timeout_sec                = 30
+
+      + log_config {
+          + enable = false
+          + filter = "ALL"
+        }
+    }
+
+  # module.prod-project.google_project.project[0] will be created
+  + resource "google_project" "project" {
+      + auto_create_network = false
+      + billing_account     = "013816-12836E-7ECD57"
+      + folder_id           = "478089741824"
+      + id                  = (known after apply)
+      + name                = "arch1-prod-project"
+      + number              = (known after apply)
+      + project_id          = "arch1-prod-project"
+      + skip_delete         = false
+    }
+
+  # module.prod-project.google_project_iam_binding.authoritative["organizations/119369546298/roles/serviceProjectNetworkAdmin"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + project = "arch1-prod-project"
+      + role    = "organizations/119369546298/roles/serviceProjectNetworkAdmin"
+    }
+
+  # module.prod-project.google_project_iam_binding.authoritative["roles/dns.admin"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + project = "arch1-prod-project"
+      + role    = "roles/dns.admin"
+    }
+
+  # module.prod-project.google_project_service.project_services["compute.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-prod-project"
+      + service                    = "compute.googleapis.com"
+    }
+
+  # module.prod-project.google_project_service.project_services["dns.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-prod-project"
+      + service                    = "dns.googleapis.com"
+    }
+
+  # module.prod-project.google_project_service.project_services["iap.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-prod-project"
+      + service                    = "iap.googleapis.com"
+    }
+
+  # module.prod-project.google_project_service.project_services["networkmanagement.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-prod-project"
+      + service                    = "networkmanagement.googleapis.com"
+    }
+
+  # module.prod-project.google_project_service.project_services["stackdriver.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-prod-project"
+      + service                    = "stackdriver.googleapis.com"
+    }
+
+  # module.prod-vpc.google_compute_network.network[0] will be created
+  + resource "google_compute_network" "network" {
+      + auto_create_subnetworks                   = false
+      + delete_default_routes_on_create           = false
+      + description                               = "Terraform-managed."
+      + gateway_ipv4                              = (known after apply)
+      + id                                        = (known after apply)
+      + internal_ipv6_range                       = (known after apply)
+      + mtu                                       = 1500
+      + name                                      = "prod-vpc"
+      + network_firewall_policy_enforcement_order = "AFTER_CLASSIC_FIREWALL"
+      + project                                   = "arch1-vpc-host"
+      + routing_mode                              = "GLOBAL"
+      + self_link                                 = (known after apply)
+    }
+
+  # module.prod-vpc.google_compute_route.gateway["private-googleapis"] will be created
+  + resource "google_compute_route" "gateway" {
+      + description            = "Terraform-managed."
+      + dest_range             = "199.36.153.8/30"
+      + id                     = (known after apply)
+      + name                   = "prod-vpc-private-googleapis"
+      + network                = (known after apply)
+      + next_hop_gateway       = "default-internet-gateway"
+      + next_hop_instance_zone = (known after apply)
+      + next_hop_ip            = (known after apply)
+      + next_hop_network       = (known after apply)
+      + priority               = 1000
+      + project                = "arch1-vpc-host"
+      + self_link              = (known after apply)
+    }
+
+  # module.prod-vpc.google_compute_route.gateway["restricted-googleapis"] will be created
+  + resource "google_compute_route" "gateway" {
+      + description            = "Terraform-managed."
+      + dest_range             = "199.36.153.4/30"
+      + id                     = (known after apply)
+      + name                   = "prod-vpc-restricted-googleapis"
+      + network                = (known after apply)
+      + next_hop_gateway       = "default-internet-gateway"
+      + next_hop_instance_zone = (known after apply)
+      + next_hop_ip            = (known after apply)
+      + next_hop_network       = (known after apply)
+      + priority               = 1000
+      + project                = "arch1-vpc-host"
+      + self_link              = (known after apply)
+    }
+
+  # module.prod-vpc.google_compute_subnetwork.subnetwork["europe-west2/prod-europe-west2"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "Default subnet for prod vpc in europe region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.152.2.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "prod-europe-west2"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "europe-west2"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.prod-vpc.google_compute_subnetwork.subnetwork["europe-west2/prod-europe-west2-dr"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "DR subnet for prod vpc in europe region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.152.3.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "prod-europe-west2-dr"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "europe-west2"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.prod-vpc.google_compute_subnetwork.subnetwork["us-central1/prod-us-central1"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "Default subnet for prod vpc in us region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.152.0.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "prod-us-central1"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "us-central1"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.prod-vpc.google_compute_subnetwork.subnetwork["us-central1/prod-us-central1-dr"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "DR subnet for prod vpc in us region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.152.1.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "prod-us-central1-dr"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "us-central1"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.prod-vpc.google_dns_policy.default[0] will be created
+  + resource "google_dns_policy" "default" {
+      + description               = "Managed by Terraform"
+      + enable_inbound_forwarding = true
+      + id                        = (known after apply)
+      + name                      = "prod-vpc"
+      + project                   = "arch1-vpc-host"
+
+      + networks {
+          + network_url = (known after apply)
+        }
+    }
+
+  # module.qa-nat-primary.google_compute_router.router[0] will be created
+  + resource "google_compute_router" "router" {
+      + creation_timestamp = (known after apply)
+      + id                 = (known after apply)
+      + name               = "qa-nat-uc1"
+      + network            = (known after apply)
+      + project            = "arch1-vpc-host"
+      + region             = "us-central1"
+      + self_link          = (known after apply)
+
+      + bgp {
+          + advertise_mode     = "DEFAULT"
+          + asn                = 4200001024
+          + keepalive_interval = 20
+        }
+    }
+
+  # module.qa-nat-primary.google_compute_router_nat.nat will be created
+  + resource "google_compute_router_nat" "nat" {
+      + enable_dynamic_port_allocation      = (known after apply)
+      + enable_endpoint_independent_mapping = true
+      + icmp_idle_timeout_sec               = 30
+      + id                                  = (known after apply)
+      + min_ports_per_vm                    = 64
+      + name                                = "qa-nat"
+      + nat_ip_allocate_option              = "AUTO_ONLY"
+      + project                             = "arch1-vpc-host"
+      + region                              = "us-central1"
+      + router                              = "qa-nat-uc1"
+      + source_subnetwork_ip_ranges_to_nat  = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+      + tcp_established_idle_timeout_sec    = 1200
+      + tcp_time_wait_timeout_sec           = 120
+      + tcp_transitory_idle_timeout_sec     = 30
+      + udp_idle_timeout_sec                = 30
+
+      + log_config {
+          + enable = false
+          + filter = "ALL"
+        }
+    }
+
+  # module.qa-nat-secondary.google_compute_router.router[0] will be created
+  + resource "google_compute_router" "router" {
+      + creation_timestamp = (known after apply)
+      + id                 = (known after apply)
+      + name               = "qa-dr-nat-uc1"
+      + network            = (known after apply)
+      + project            = "arch1-vpc-host"
+      + region             = "europe-west2"
+      + self_link          = (known after apply)
+
+      + bgp {
+          + advertise_mode     = "DEFAULT"
+          + asn                = 4200001024
+          + keepalive_interval = 20
+        }
+    }
+
+  # module.qa-nat-secondary.google_compute_router_nat.nat will be created
+  + resource "google_compute_router_nat" "nat" {
+      + enable_dynamic_port_allocation      = (known after apply)
+      + enable_endpoint_independent_mapping = true
+      + icmp_idle_timeout_sec               = 30
+      + id                                  = (known after apply)
+      + min_ports_per_vm                    = 64
+      + name                                = "qa-dr-nat"
+      + nat_ip_allocate_option              = "AUTO_ONLY"
+      + project                             = "arch1-vpc-host"
+      + region                              = "europe-west2"
+      + router                              = "qa-dr-nat-uc1"
+      + source_subnetwork_ip_ranges_to_nat  = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+      + tcp_established_idle_timeout_sec    = 1200
+      + tcp_time_wait_timeout_sec           = 120
+      + tcp_transitory_idle_timeout_sec     = 30
+      + udp_idle_timeout_sec                = 30
+
+      + log_config {
+          + enable = false
+          + filter = "ALL"
+        }
+    }
+
+  # module.qa-project.google_project.project[0] will be created
+  + resource "google_project" "project" {
+      + auto_create_network = false
+      + billing_account     = "013816-12836E-7ECD57"
+      + folder_id           = "248875342427"
+      + id                  = (known after apply)
+      + name                = "arch1-qa-project"
+      + number              = (known after apply)
+      + project_id          = "arch1-qa-project"
+      + skip_delete         = false
+    }
+
+  # module.qa-project.google_project_iam_binding.authoritative["organizations/119369546298/roles/serviceProjectNetworkAdmin"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + project = "arch1-qa-project"
+      + role    = "organizations/119369546298/roles/serviceProjectNetworkAdmin"
+    }
+
+  # module.qa-project.google_project_iam_binding.authoritative["roles/dns.admin"] will be created
+  + resource "google_project_iam_binding" "authoritative" {
+      + etag    = (known after apply)
+      + id      = (known after apply)
+      + project = "arch1-qa-project"
+      + role    = "roles/dns.admin"
+    }
+
+  # module.qa-project.google_project_service.project_services["compute.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-qa-project"
+      + service                    = "compute.googleapis.com"
+    }
+
+  # module.qa-project.google_project_service.project_services["dns.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-qa-project"
+      + service                    = "dns.googleapis.com"
+    }
+
+  # module.qa-project.google_project_service.project_services["iap.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-qa-project"
+      + service                    = "iap.googleapis.com"
+    }
+
+  # module.qa-project.google_project_service.project_services["networkmanagement.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-qa-project"
+      + service                    = "networkmanagement.googleapis.com"
+    }
+
+  # module.qa-project.google_project_service.project_services["stackdriver.googleapis.com"] will be created
+  + resource "google_project_service" "project_services" {
+      + disable_dependent_services = false
+      + disable_on_destroy         = false
+      + id                         = (known after apply)
+      + project                    = "arch1-qa-project"
+      + service                    = "stackdriver.googleapis.com"
+    }
+
+  # module.qa-vpc.google_compute_network.network[0] will be created
+  + resource "google_compute_network" "network" {
+      + auto_create_subnetworks                   = false
+      + delete_default_routes_on_create           = false
+      + description                               = "Terraform-managed."
+      + gateway_ipv4                              = (known after apply)
+      + id                                        = (known after apply)
+      + internal_ipv6_range                       = (known after apply)
+      + mtu                                       = 1500
+      + name                                      = "qa-vpc"
+      + network_firewall_policy_enforcement_order = "AFTER_CLASSIC_FIREWALL"
+      + project                                   = "arch1-vpc-host"
+      + routing_mode                              = "GLOBAL"
+      + self_link                                 = (known after apply)
+    }
+
+  # module.qa-vpc.google_compute_route.gateway["private-googleapis"] will be created
+  + resource "google_compute_route" "gateway" {
+      + description            = "Terraform-managed."
+      + dest_range             = "199.36.153.8/30"
+      + id                     = (known after apply)
+      + name                   = "qa-vpc-private-googleapis"
+      + network                = (known after apply)
+      + next_hop_gateway       = "default-internet-gateway"
+      + next_hop_instance_zone = (known after apply)
+      + next_hop_ip            = (known after apply)
+      + next_hop_network       = (known after apply)
+      + priority               = 1000
+      + project                = "arch1-vpc-host"
+      + self_link              = (known after apply)
+    }
+
+  # module.qa-vpc.google_compute_route.gateway["restricted-googleapis"] will be created
+  + resource "google_compute_route" "gateway" {
+      + description            = "Terraform-managed."
+      + dest_range             = "199.36.153.4/30"
+      + id                     = (known after apply)
+      + name                   = "qa-vpc-restricted-googleapis"
+      + network                = (known after apply)
+      + next_hop_gateway       = "default-internet-gateway"
+      + next_hop_instance_zone = (known after apply)
+      + next_hop_ip            = (known after apply)
+      + next_hop_network       = (known after apply)
+      + priority               = 1000
+      + project                = "arch1-vpc-host"
+      + self_link              = (known after apply)
+    }
+
+  # module.qa-vpc.google_compute_subnetwork.subnetwork["europe-west2/qa-europe-west2"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "Default subnet for qa vpc in europe region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.153.2.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "qa-europe-west2"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "europe-west2"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.qa-vpc.google_compute_subnetwork.subnetwork["europe-west2/qa-europe-west2-dr"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "DR subnet for qa vpc in europe region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.153.3.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "qa-europe-west2-dr"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "europe-west2"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.qa-vpc.google_compute_subnetwork.subnetwork["us-central1/qa-us-central1"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "Default subnet for qa vpc in us region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.153.0.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "qa-us-central1"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "us-central1"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.qa-vpc.google_compute_subnetwork.subnetwork["us-central1/qa-us-central1-dr"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "DR subnet for qa vpc in us region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.153.1.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "qa-us-central1-dr"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "us-central1"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.qa-vpc.google_dns_policy.default[0] will be created
+  + resource "google_dns_policy" "default" {
+      + description               = "Managed by Terraform"
+      + enable_inbound_forwarding = true
+      + id                        = (known after apply)
+      + name                      = "qa-vpc"
+      + project                   = "arch1-vpc-host"
+
+      + networks {
+          + network_url = (known after apply)
+        }
+    }
+
+  # module.shared-resources-nat-primary.google_compute_router.router[0] will be created
+  + resource "google_compute_router" "router" {
+      + creation_timestamp = (known after apply)
+      + id                 = (known after apply)
+      + name               = "shared-resources-nat-uc1"
+      + network            = (known after apply)
+      + project            = "arch1-vpc-host"
+      + region             = "us-central1"
+      + self_link          = (known after apply)
+
+      + bgp {
+          + advertise_mode     = "DEFAULT"
+          + asn                = 4200001024
+          + keepalive_interval = 20
+        }
+    }
+
+  # module.shared-resources-nat-primary.google_compute_router_nat.nat will be created
+  + resource "google_compute_router_nat" "nat" {
+      + enable_dynamic_port_allocation      = (known after apply)
+      + enable_endpoint_independent_mapping = true
+      + icmp_idle_timeout_sec               = 30
+      + id                                  = (known after apply)
+      + min_ports_per_vm                    = 64
+      + name                                = "shared-resources-nat"
+      + nat_ip_allocate_option              = "AUTO_ONLY"
+      + project                             = "arch1-vpc-host"
+      + region                              = "us-central1"
+      + router                              = "shared-resources-nat-uc1"
+      + source_subnetwork_ip_ranges_to_nat  = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+      + tcp_established_idle_timeout_sec    = 1200
+      + tcp_time_wait_timeout_sec           = 120
+      + tcp_transitory_idle_timeout_sec     = 30
+      + udp_idle_timeout_sec                = 30
+
+      + log_config {
+          + enable = false
+          + filter = "ALL"
+        }
+    }
+
+  # module.shared-resources-nat-secondary.google_compute_router.router[0] will be created
+  + resource "google_compute_router" "router" {
+      + creation_timestamp = (known after apply)
+      + id                 = (known after apply)
+      + name               = "shared-resources-dr-nat-uc1"
+      + network            = (known after apply)
+      + project            = "arch1-vpc-host"
+      + region             = "europe-west2"
+      + self_link          = (known after apply)
+
+      + bgp {
+          + advertise_mode     = "DEFAULT"
+          + asn                = 4200001024
+          + keepalive_interval = 20
+        }
+    }
+
+  # module.shared-resources-nat-secondary.google_compute_router_nat.nat will be created
+  + resource "google_compute_router_nat" "nat" {
+      + enable_dynamic_port_allocation      = (known after apply)
+      + enable_endpoint_independent_mapping = true
+      + icmp_idle_timeout_sec               = 30
+      + id                                  = (known after apply)
+      + min_ports_per_vm                    = 64
+      + name                                = "shared-resources-dr-nat"
+      + nat_ip_allocate_option              = "AUTO_ONLY"
+      + project                             = "arch1-vpc-host"
+      + region                              = "europe-west2"
+      + router                              = "shared-resources-dr-nat-uc1"
+      + source_subnetwork_ip_ranges_to_nat  = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+      + tcp_established_idle_timeout_sec    = 1200
+      + tcp_time_wait_timeout_sec           = 120
+      + tcp_transitory_idle_timeout_sec     = 30
+      + udp_idle_timeout_sec                = 30
+
+      + log_config {
+          + enable = false
+          + filter = "ALL"
+        }
+    }
+
+  # module.shared-resources-vpc.google_compute_network.network[0] will be created
+  + resource "google_compute_network" "network" {
+      + auto_create_subnetworks                   = false
+      + delete_default_routes_on_create           = false
+      + description                               = "Terraform-managed."
+      + gateway_ipv4                              = (known after apply)
+      + id                                        = (known after apply)
+      + internal_ipv6_range                       = (known after apply)
+      + mtu                                       = 1500
+      + name                                      = "shared-resources-vpc"
+      + network_firewall_policy_enforcement_order = "AFTER_CLASSIC_FIREWALL"
+      + project                                   = "arch1-vpc-host"
+      + routing_mode                              = "GLOBAL"
+      + self_link                                 = (known after apply)
+    }
+
+  # module.shared-resources-vpc.google_compute_route.gateway["private-googleapis"] will be created
+  + resource "google_compute_route" "gateway" {
+      + description            = "Terraform-managed."
+      + dest_range             = "199.36.153.8/30"
+      + id                     = (known after apply)
+      + name                   = "shared-resources-vpc-private-googleapis"
+      + network                = (known after apply)
+      + next_hop_gateway       = "default-internet-gateway"
+      + next_hop_instance_zone = (known after apply)
+      + next_hop_ip            = (known after apply)
+      + next_hop_network       = (known after apply)
+      + priority               = 1000
+      + project                = "arch1-vpc-host"
+      + self_link              = (known after apply)
+    }
+
+  # module.shared-resources-vpc.google_compute_route.gateway["restricted-googleapis"] will be created
+  + resource "google_compute_route" "gateway" {
+      + description            = "Terraform-managed."
+      + dest_range             = "199.36.153.4/30"
+      + id                     = (known after apply)
+      + name                   = "shared-resources-vpc-restricted-googleapis"
+      + network                = (known after apply)
+      + next_hop_gateway       = "default-internet-gateway"
+      + next_hop_instance_zone = (known after apply)
+      + next_hop_ip            = (known after apply)
+      + next_hop_network       = (known after apply)
+      + priority               = 1000
+      + project                = "arch1-vpc-host"
+      + self_link              = (known after apply)
+    }
+
+  # module.shared-resources-vpc.google_compute_subnetwork.subnetwork["europe-west2/shared-resources-europe-west2"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "Default subnet for shared-resources vpc in europe region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.151.2.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "shared-resources-europe-west2"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "europe-west2"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.shared-resources-vpc.google_compute_subnetwork.subnetwork["europe-west2/shared-resources-europe-west2-dr"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "DR subnet for shared-resources vpc in europe region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.151.3.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "shared-resources-europe-west2-dr"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "europe-west2"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.shared-resources-vpc.google_compute_subnetwork.subnetwork["us-central1/shared-resources-us-central1"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "Default subnet for shared-resources vpc in us region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.151.0.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "shared-resources-us-central1"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "us-central1"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.shared-resources-vpc.google_compute_subnetwork.subnetwork["us-central1/shared-resources-us-central1-dr"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "DR subnet for shared-resources vpc in us region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.151.1.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "shared-resources-us-central1-dr"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "us-central1"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.shared-resources-vpc.google_dns_policy.default[0] will be created
+  + resource "google_dns_policy" "default" {
+      + description               = "Managed by Terraform"
+      + enable_inbound_forwarding = true
+      + id                        = (known after apply)
+      + name                      = "shared-resources-vpc"
+      + project                   = "arch1-vpc-host"
+
+      + networks {
+          + network_url = (known after apply)
+        }
+    }
+
+  # module.transit-nat-primary.google_compute_router.router[0] will be created
+  + resource "google_compute_router" "router" {
+      + creation_timestamp = (known after apply)
+      + id                 = (known after apply)
+      + name               = "transit-nat-uc1"
+      + network            = (known after apply)
+      + project            = "arch1-vpc-host"
+      + region             = "us-central1"
+      + self_link          = (known after apply)
+
+      + bgp {
+          + advertise_mode     = "DEFAULT"
+          + asn                = 4200001024
+          + keepalive_interval = 20
+        }
+    }
+
+  # module.transit-nat-primary.google_compute_router_nat.nat will be created
+  + resource "google_compute_router_nat" "nat" {
+      + enable_dynamic_port_allocation      = (known after apply)
+      + enable_endpoint_independent_mapping = true
+      + icmp_idle_timeout_sec               = 30
+      + id                                  = (known after apply)
+      + min_ports_per_vm                    = 64
+      + name                                = "transit-nat"
+      + nat_ip_allocate_option              = "AUTO_ONLY"
+      + project                             = "arch1-vpc-host"
+      + region                              = "us-central1"
+      + router                              = "transit-nat-uc1"
+      + source_subnetwork_ip_ranges_to_nat  = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+      + tcp_established_idle_timeout_sec    = 1200
+      + tcp_time_wait_timeout_sec           = 120
+      + tcp_transitory_idle_timeout_sec     = 30
+      + udp_idle_timeout_sec                = 30
+
+      + log_config {
+          + enable = false
+          + filter = "ALL"
+        }
+    }
+
+  # module.transit-nat-secondary.google_compute_router.router[0] will be created
+  + resource "google_compute_router" "router" {
+      + creation_timestamp = (known after apply)
+      + id                 = (known after apply)
+      + name               = "transit-dr-nat-uc1"
+      + network            = (known after apply)
+      + project            = "arch1-vpc-host"
+      + region             = "europe-west2"
+      + self_link          = (known after apply)
+
+      + bgp {
+          + advertise_mode     = "DEFAULT"
+          + asn                = 4200001024
+          + keepalive_interval = 20
+        }
+    }
+
+  # module.transit-nat-secondary.google_compute_router_nat.nat will be created
+  + resource "google_compute_router_nat" "nat" {
+      + enable_dynamic_port_allocation      = (known after apply)
+      + enable_endpoint_independent_mapping = true
+      + icmp_idle_timeout_sec               = 30
+      + id                                  = (known after apply)
+      + min_ports_per_vm                    = 64
+      + name                                = "transit-dr-nat"
+      + nat_ip_allocate_option              = "AUTO_ONLY"
+      + project                             = "arch1-vpc-host"
+      + region                              = "europe-west2"
+      + router                              = "transit-dr-nat-uc1"
+      + source_subnetwork_ip_ranges_to_nat  = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+      + tcp_established_idle_timeout_sec    = 1200
+      + tcp_time_wait_timeout_sec           = 120
+      + tcp_transitory_idle_timeout_sec     = 30
+      + udp_idle_timeout_sec                = 30
+
+      + log_config {
+          + enable = false
+          + filter = "ALL"
+        }
+    }
+
+  # module.transit-vpc.google_compute_network.network[0] will be created
+  + resource "google_compute_network" "network" {
+      + auto_create_subnetworks                   = false
+      + delete_default_routes_on_create           = false
+      + description                               = "Terraform-managed."
+      + gateway_ipv4                              = (known after apply)
+      + id                                        = (known after apply)
+      + internal_ipv6_range                       = (known after apply)
+      + mtu                                       = 1500
+      + name                                      = "transit-vpc"
+      + network_firewall_policy_enforcement_order = "AFTER_CLASSIC_FIREWALL"
+      + project                                   = "arch1-vpc-host"
+      + routing_mode                              = "GLOBAL"
+      + self_link                                 = (known after apply)
+    }
+
+  # module.transit-vpc.google_compute_route.gateway["private-googleapis"] will be created
+  + resource "google_compute_route" "gateway" {
+      + description            = "Terraform-managed."
+      + dest_range             = "199.36.153.8/30"
+      + id                     = (known after apply)
+      + name                   = "transit-vpc-private-googleapis"
+      + network                = (known after apply)
+      + next_hop_gateway       = "default-internet-gateway"
+      + next_hop_instance_zone = (known after apply)
+      + next_hop_ip            = (known after apply)
+      + next_hop_network       = (known after apply)
+      + priority               = 1000
+      + project                = "arch1-vpc-host"
+      + self_link              = (known after apply)
+    }
+
+  # module.transit-vpc.google_compute_route.gateway["restricted-googleapis"] will be created
+  + resource "google_compute_route" "gateway" {
+      + description            = "Terraform-managed."
+      + dest_range             = "199.36.153.4/30"
+      + id                     = (known after apply)
+      + name                   = "transit-vpc-restricted-googleapis"
+      + network                = (known after apply)
+      + next_hop_gateway       = "default-internet-gateway"
+      + next_hop_instance_zone = (known after apply)
+      + next_hop_ip            = (known after apply)
+      + next_hop_network       = (known after apply)
+      + priority               = 1000
+      + project                = "arch1-vpc-host"
+      + self_link              = (known after apply)
+    }
+
+  # module.transit-vpc.google_compute_subnetwork.subnetwork["europe-west2/transit-europe-west2"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "Default subnet for transit vpc in europe region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.150.2.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "transit-europe-west2"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "europe-west2"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.transit-vpc.google_compute_subnetwork.subnetwork["europe-west2/transit-europe-west2-dr"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "DR subnet for transit vpc in europe region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.150.3.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "transit-europe-west2-dr"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "europe-west2"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.transit-vpc.google_compute_subnetwork.subnetwork["us-central1/transit-us-central1"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "Default subnet for transit vpc in us region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.150.0.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "transit-us-central1"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "us-central1"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.transit-vpc.google_compute_subnetwork.subnetwork["us-central1/transit-us-central1-dr"] will be created
+  + resource "google_compute_subnetwork" "subnetwork" {
+      + creation_timestamp         = (known after apply)
+      + description                = "DR subnet for transit vpc in us region"
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + ip_cidr_range              = "10.150.1.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + name                       = "transit-us-central1-dr"
+      + network                    = (known after apply)
+      + private_ip_google_access   = true
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "arch1-vpc-host"
+      + purpose                    = (known after apply)
+      + region                     = "us-central1"
+      + secondary_ip_range         = []
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+    }
+
+  # module.transit-vpc.google_dns_policy.default[0] will be created
+  + resource "google_dns_policy" "default" {
+      + description               = "Managed by Terraform"
+      + enable_inbound_forwarding = true
+      + id                        = (known after apply)
+      + name                      = "transit-vpc"
+      + project                   = "arch1-vpc-host"
+
+      + networks {
+          + network_url = (known after apply)
+        }
+    }
+
+Plan: 121 to add, 0 to change, 0 to destroy.

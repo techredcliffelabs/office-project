@@ -70,6 +70,10 @@ locals {
       outputs_bucket               = module.automation-tf-output-gcs.name
       project_id                   = module.automation-project.project_id
       project_number               = module.automation-project.number
+      audit-log-project_id         = module.log-export-project.project_id
+      #dev-log-bucket               = module.log-export-logbucket-dev.id
+      #qa-log-bucket                = module.log-export-logbucket-qa.id
+      audit-log-bucket              = module.log-export-logbucket-audit-logs.id
     }
     custom_roles = local.custom_roles
   }

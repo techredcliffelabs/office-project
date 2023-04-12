@@ -46,9 +46,9 @@ locals {
 module "folder" {
   source        = "../../../modules/folder"
   parent        = "organizations/${var.organization.id}"
-  name          = "Networking"
-  folder_create = var.folder_ids.networking == null
-  id            = var.folder_ids.networking
+  name          = "shared-resources"
+  folder_create = var.folder_ids.shared-resources == null
+  id            = var.folder_ids.shared-resources
   firewall_policy_factory = {
     cidr_file   = "${var.factories_config.data_dir}/cidrs.yaml"
     policy_name = var.factories_config.firewall_policy_name

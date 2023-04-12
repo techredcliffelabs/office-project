@@ -19,7 +19,7 @@
 module "branch-non-prod-folder" {
   source = "../../../modules/folder"
   parent = "organizations/${var.organization.id}"
-  name   = "no-prod"
+  name   = "non-prod"
  
   iam = {
     "roles/logging.admin"                  = [module.branch-network-sa.iam_email]
@@ -39,7 +39,7 @@ module "branch-non-prod-folder" {
 
 # automation service account and bucket
 
-module "branch-non-prod-gcs" {
+/*module "branch-non-prod-gcs" {
   source        = "../../../modules/gcs"
   project_id    = var.automation.project_id
   name          = "non-prod"
@@ -50,4 +50,4 @@ module "branch-non-prod-gcs" {
   iam = {
     "roles/storage.objectAdmin" = [module.branch-network-sa.iam_email]
   }
-}
+}*/
